@@ -1,0 +1,54 @@
+import {
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  IconButton,
+  Input,
+} from '@chakra-ui/react';
+import { useField } from 'formik';
+import { FC, InputHTMLAttributes, useState } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+
+type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  name: string;
+  label: string;
+  isPassword: boolean;
+};
+
+const InputField: FC<InputFieldProps> = ({ label, size: _, ...props }) => {
+  const [field, { error }] = useField(props);
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <FormControl isInvalid={!!error}>
+      <FormLabel htmlFor='name'>{label}</FormLabel>
+      <Flex>
+        <Input
+          {...field}
+          {...props}
+          id={field.name}
+          placeholder={props.placeholder}
+          type={showPassword ? 'text' : props.type}
+        />
+
+        {props.isPassword && (
+          <IconButton
+            zIndex={1}
+            position={'absolute'}
+            right={0}
+            variant={'ghost'}
+            color={'teal'}
+            size={'md'}
+            aria-label={'hide/show password'}
+            icon={showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+            onClick={() => setShowPassword((prev) => !prev)}
+          />
+        )}
+      </Flex>
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+    </FormControl>
+  );
+};
+
+export default InputField;
