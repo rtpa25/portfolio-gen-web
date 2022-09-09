@@ -1,8 +1,5 @@
 query Me {
   me {
-    _id
-    email
-    username
-    createdAt
+    ...UserData
   }
 }

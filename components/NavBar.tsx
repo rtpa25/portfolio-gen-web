@@ -1,5 +1,13 @@
 import { useApolloClient } from '@apollo/client';
-import { Box, Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
 import { useLogoutMutation, useMeQuery, User } from '../generated/graphql';
@@ -46,9 +54,15 @@ const NavBar: FC = () => {
   } else {
     body = (
       <Flex>
-        <Box color={'white'} mr={4}>
+        <Flex alignItems={'center'} color={'white'} mr={4}>
+          <Avatar
+            name={currentUser?.username}
+            src={currentUser?.avatar}
+            mx={4}
+            cursor={'pointer'}
+          />
           <Text>{currentUser?.username}</Text>
-        </Box>
+        </Flex>
         <Button
           onClick={async () => {
             await logout({});
@@ -77,7 +91,7 @@ const NavBar: FC = () => {
       <Box>
         <NextLink href='/'>
           <Heading cursor={'pointer'} color={'gray.200'}>
-            Li-Reddit
+            DevFolio
           </Heading>
         </NextLink>
       </Box>

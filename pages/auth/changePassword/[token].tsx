@@ -9,7 +9,6 @@ import { useChangePasswordMutation } from '../../../generated/graphql';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setCurrentUserData } from '../../../store/slices/currentUser.slice';
 import { toErrorMap } from '../../../utils/toErrorMap';
-import { createWithApollo } from '../../../utils/withApollo';
 
 const ChangePassword = () => {
   const [changePassword] = useChangePasswordMutation();
@@ -84,4 +83,4 @@ const ChangePassword = () => {
   );
 };
 
-export default createWithApollo({ ssr: false })(ChangePassword);
+export default ChangePassword;

@@ -4,7 +4,7 @@ import { withApollo } from 'next-apollo';
 
 const createClient = (ctx: NextPageContext | undefined) => {
   return new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({}),
     uri: 'http://localhost:4000/graphql',
     credentials: 'include',
     headers: {

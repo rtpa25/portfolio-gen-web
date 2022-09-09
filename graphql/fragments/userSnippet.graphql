@@ -1,0 +1,7 @@
+fragment UserData on User {
+  _id
+  email
+  username
+  createdAt
+  avatar
+}

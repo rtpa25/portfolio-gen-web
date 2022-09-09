@@ -71,6 +71,7 @@ export type SignUpInput = {
 export type User = {
   __typename?: 'User';
   _id: Scalars['String'];
+  avatar: Scalars['String'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   username: Scalars['String'];
@@ -82,13 +83,17 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string };
+
 export type ChangePasswordMutationVariables = Exact<{
   newPassword: Scalars['String'];
   token: Scalars['String'];
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -102,7 +107,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', signIn: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type LoginMutation = { __typename?: 'Mutation', signIn: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -114,30 +119,41 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type RegisterMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null };
 
-
+export const FieldErrorFragmentDoc = gql`
+    fragment FieldError on FieldError {
+  field
+  message
+}
+    `;
+export const UserDataFragmentDoc = gql`
+    fragment UserData on User {
+  _id
+  email
+  username
+  createdAt
+  avatar
+}
+    `;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($newPassword: String!, $token: String!) {
   changePassword(newPassword: $newPassword, token: $token) {
     user {
-      _id
-      email
-      username
-      createdAt
+      ...UserData
     }
     errors {
-      field
-      message
+      ...FieldError
     }
   }
 }
-    `;
+    ${UserDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
 export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
 
 /**
@@ -200,18 +216,15 @@ export const LoginDocument = gql`
     mutation Login($input: SignInInput!) {
   signIn(input: $input) {
     user {
-      _id
-      email
-      username
-      createdAt
+      ...UserData
     }
     errors {
-      field
-      message
+      ...FieldError
     }
   }
 }
-    `;
+    ${UserDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -272,18 +285,15 @@ export const RegisterDocument = gql`
     mutation Register($input: SignUpInput!) {
   signUp(input: $input) {
     user {
-      _id
-      email
-      username
-      createdAt
+      ...UserData
     }
     errors {
-      field
-      message
+      ...FieldError
     }
   }
 }
-    `;
+    ${UserDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -313,13 +323,10 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const MeDocument = gql`
     query Me {
   me {
-    _id
-    email
-    username
-    createdAt
+    ...UserData
   }
 }
-    `;
+    ${UserDataFragmentDoc}`;
 
 /**
  * __useMeQuery__

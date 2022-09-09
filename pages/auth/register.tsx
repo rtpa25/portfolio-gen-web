@@ -8,7 +8,6 @@ import { useRegisterMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
 import { setCurrentUserData } from '../../store/slices/currentUser.slice';
 import { toErrorMap } from '../../utils/toErrorMap';
-import { createWithApollo } from '../../utils/withApollo';
 
 const Register = () => {
   const [register] = useRegisterMutation();
@@ -90,4 +89,4 @@ const Register = () => {
   );
 };
 
-export default createWithApollo({ ssr: false })(Register);
+export default Register;
