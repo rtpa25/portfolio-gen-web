@@ -1,2 +1,10 @@
-export { default as InputField } from './InputField';
-export { default as Wrapper } from './Wrapper';
+export { default as InputField } from './misc/InputField';
+export { default as Wrapper } from './misc/Wrapper';
+export { default as EditProfileModal } from './modals/EditProfileModal';
+export { default as AddSocialLinkModal } from './modals/SocialLinksModal';
+export { default as AddAboutSectionModal } from './modals/AddAboutSectionModal';
+export { default as AddTechStackModal } from './modals/AddTechStackModal';
+export { default as AddExperienceModal } from './modals/AddExperienceModal';
+export { default as AddProjectModal } from './modals/AddProjectModal';
+export { default as DataSection } from './main/DataSection';
+export { default as UserProfileTopSection } from './main/UserProfileTopSection';

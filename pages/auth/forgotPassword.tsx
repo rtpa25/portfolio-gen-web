@@ -36,6 +36,7 @@ const ForgotPassword = () => {
                     label={'Email'}
                     type={'email'}
                     isPassword={false}
+                    showFormLabel={true}
                   />
                 </Box>
                 <Flex justifyContent={'space-between'} alignItems={'baseline'}>

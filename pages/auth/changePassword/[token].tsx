@@ -55,6 +55,7 @@ const ChangePassword = () => {
                 label={'New Password'}
                 type={'password'}
                 isPassword={true}
+                showFormLabel={true}
               />
               {tokenError && (
                 <Flex>

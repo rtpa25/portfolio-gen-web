@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FC, useEffect } from 'react';
-import { useLogoutMutation, useMeQuery, User } from '../generated/graphql';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { setCurrentUserData } from '../store/slices/currentUser.slice';
+import { useLogoutMutation, useMeQuery, User } from '../../generated/graphql';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { setCurrentUserData } from '../../store/slices/currentUser.slice';
 
 const NavBar: FC = () => {
   const dispatch = useAppDispatch();
@@ -57,7 +57,7 @@ const NavBar: FC = () => {
         <Flex alignItems={'center'} color={'white'} mr={4}>
           <Avatar
             name={currentUser?.username}
-            src={currentUser?.avatar}
+            // src={currentUser?.avatar}
             mx={4}
             cursor={'pointer'}
           />

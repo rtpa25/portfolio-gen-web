@@ -45,6 +45,7 @@ const Register = () => {
                 placeholder={'username'}
                 label={'Username'}
                 isPassword={false}
+                showFormLabel={true}
               />
               <Box mt={4}>
                 <InputField
@@ -53,6 +54,7 @@ const Register = () => {
                   label={'Email'}
                   type={'email'}
                   isPassword={false}
+                  showFormLabel={true}
                 />
               </Box>
               <Box mt={4}>
@@ -62,6 +64,7 @@ const Register = () => {
                   label={'Password'}
                   type={'password'}
                   isPassword={true}
+                  showFormLabel={true}
                 />
               </Box>
               <Flex justifyContent={'space-between'} alignItems='baseline'>

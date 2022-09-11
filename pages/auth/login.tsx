@@ -47,6 +47,7 @@ const Login = () => {
                 label={'Email'}
                 type={'email'}
                 isPassword={false}
+                showFormLabel={true}
               />
               <Box mt={4}>
                 <InputField
@@ -55,6 +56,7 @@ const Login = () => {
                   label={'Password'}
                   type={'password'}
                   isPassword={true}
+                  showFormLabel={true}
                 />
               </Box>
               <Flex justifyContent={'space-between'} alignItems='baseline'>
