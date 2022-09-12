@@ -12,8 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { FC, useState } from 'react';
+import { useCreateSocialLinkMutation } from '../../generated/graphql';
+import { useAppDispatch } from '../../hooks/redux';
+import { addLink } from '../../store/slices/currentUser.slice';
 import { ModalProps } from '../../utils/ModalProps';
 import { SocialLink, SocialLinkTypes } from '../../utils/SocialLinkTypes';
+import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
 
 interface AddSocialLinkModalProps extends ModalProps {}
@@ -23,6 +27,8 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
   onClose,
 }) => {
   const [linkType, setLinkType] = useState<SocialLink['type']>('Github');
+  const [addSocialLink] = useCreateSocialLinkMutation();
+  const dispatch = useAppDispatch();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='xl'>
@@ -35,6 +41,18 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
             initialValues={{ link: '' }}
             onSubmit={async (values, { setErrors }) => {
               console.log({ ...values, linkType });
+              try {
+                const { data } = await addSocialLink({
+                  variables: { input: { ...values, name: linkType } },
+                });
+                if (data?.createSocialLink.errors)
+                  setErrors(toErrorMap(data.createSocialLink.errors));
+                dispatch(addLink(data?.createSocialLink.socialLink!));
+                onClose();
+              } catch (error) {
+                console.error(error);
+                setErrors({ link: 'Something went wrong' });
+              }
             }}>
             {({ isSubmitting }) => (
               <Form>
@@ -72,8 +90,7 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
                   type='submit'
                   colorScheme='teal'
                   mr={3}
-                  isLoading={isSubmitting}
-                  onClick={onClose}>
+                  isLoading={isSubmitting}>
                   Add Link
                 </Button>
               </Form>

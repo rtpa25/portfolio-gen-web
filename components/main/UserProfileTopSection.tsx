@@ -11,7 +11,7 @@ import { FC } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { useAppSelector } from '../../hooks/redux';
 import EditProfileModal from '../modals/EditProfileModal';
-import AddSocialLinkModal from '../modals/SocialLinksModal';
+import Links from './Links';
 
 interface UserProfileTopSectionProps {
   EditProfileModalOnOpen: () => void;
@@ -39,6 +39,7 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
           <Avatar
             name={currentUser?.username}
             mx={4}
+            src={currentUser?.avatar}
             cursor={'pointer'}
             size={'2xl'}
           />
@@ -52,9 +53,6 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
             <Text position={'absolute'} top={1} right={2}>
               👋
             </Text>
-            {/* <Box position={'absolute'} w='auto' bgColor='black'>
-              <Text color={'white'}>Hello There</Text>
-            </Box> */}
           </Box>
         </Box>
 
@@ -72,19 +70,11 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
           onClose={EditProfileModalOnClose}
         />
       </Flex>
-      <Box ml={6} mt={4}>
-        <Heading size={'md'} fontWeight='semibold'>
-          {currentUser?.username}
-        </Heading>
-        <Text mt={2}>This is Vansita</Text>
-        <Button mt={10} variant={'solid'} onClick={AddSocialLinkModalOnOpen}>
-          <Text fontWeight={'medium'}>Add Links</Text>
-        </Button>
-        <AddSocialLinkModal
-          isOpen={AddSocialLinkModalIsOpen}
-          onClose={AddSocialLinkModalOnClose}
-        />
-      </Box>
+      <Links
+        onOpen={AddSocialLinkModalOnOpen}
+        isOpen={AddSocialLinkModalIsOpen}
+        onClose={AddSocialLinkModalOnClose}
+      />
 
       <Flex
         ml={6}

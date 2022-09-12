@@ -1,7 +1,7 @@
 mutation Register($input: SignUpInput!) {
   signUp(input: $input) {
     user {
-      ...UserData
+      ...AuthData
     }
     errors {
       ...FieldError

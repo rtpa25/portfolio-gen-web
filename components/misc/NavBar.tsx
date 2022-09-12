@@ -57,7 +57,7 @@ const NavBar: FC = () => {
         <Flex alignItems={'center'} color={'white'} mr={4}>
           <Avatar
             name={currentUser?.username}
-            // src={currentUser?.avatar}
+            src={currentUser?.avatar}
             mx={4}
             cursor={'pointer'}
           />

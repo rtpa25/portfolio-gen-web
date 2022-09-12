@@ -1,0 +1,6 @@
+fragment AuthData on User {
+  _id
+  email
+  username
+  createdAt
+}

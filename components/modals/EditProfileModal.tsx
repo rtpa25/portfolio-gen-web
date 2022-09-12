@@ -12,12 +12,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Form, Formik } from 'formik';
 
-import { FC, LegacyRef, useRef, useState } from 'react';
-import { User, useUpdateUserProfileMutation } from '../../generated/graphql';
+import { ChangeEvent, FC, LegacyRef, useRef, useState } from 'react';
+import { v4 } from 'uuid';
+import {
+  UpdateUserProfileInput,
+  User,
+  useUpdateUserProfileMutation,
+} from '../../generated/graphql';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { setCurrentUserData } from '../../store/slices/currentUser.slice';
+import { storage } from '../../utils/firebase';
 import { ModalProps } from '../../utils/ModalProps';
 import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
@@ -27,9 +34,23 @@ interface EditProfileModalProps extends ModalProps {}
 const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
   const currentUser = useAppSelector((state) => state.currentUser.user);
   const fileSelectorRef: LegacyRef<HTMLInputElement> = useRef(null);
-  const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [selectedAvatar, setSelectedAvatar] = useState<File>();
   const [updateProfile] = useUpdateUserProfileMutation();
   const dispatch = useAppDispatch();
+  const [avatarUrlFromFirebase, setAvatarUrlFromFirebase] = useState('');
+
+  const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
+    setSelectedAvatar(e.target.files![0]);
+    if (!selectedAvatar) return;
+    const imageRef = ref(storage, `images/${selectedAvatar.name + v4()}`);
+    uploadBytes(imageRef, selectedAvatar).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url);
+
+        setAvatarUrlFromFirebase(url);
+      });
+    });
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -44,7 +65,11 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
               mr={4}
               mb={4}
               cursor={'pointer'}
-              src={selectedAvatar && selectedAvatar}
+              src={
+                avatarUrlFromFirebase
+                  ? avatarUrlFromFirebase
+                  : currentUser?.avatar
+              }
               size={'xl'}
             />
 
@@ -61,14 +86,14 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
                 }}>
                 Change Avatar
               </Button>
+
               <Input
                 ref={fileSelectorRef}
                 type={'file'}
                 variant='flushed'
                 display={'none'}
-                value={selectedAvatar}
                 onChange={(e) => {
-                  setSelectedAvatar(e.target.value);
+                  uploadFile(e);
                 }}
               />
             </Box>
@@ -76,9 +101,12 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
           <Formik
             initialValues={{ username: '', status: '', oneLiner: '' }}
             onSubmit={async (values, { setErrors }) => {
+              const input: UpdateUserProfileInput = { ...values };
+              if (avatarUrlFromFirebase)
+                input['avatar'] = avatarUrlFromFirebase;
               const { data } = await updateProfile({
                 variables: {
-                  input: values,
+                  input,
                 },
               });
               if (data?.updateUserProfile.errors) {

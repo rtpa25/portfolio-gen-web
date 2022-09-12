@@ -55,12 +55,12 @@ const DataSection: FC<DataSectionProps> = ({
           <Box>
             <IconButton
               mx={2}
-              aria-label={'edit about section'}
+              aria-label={'edit section'}
               icon={<BiEditAlt />}
             />
             <IconButton
               ml={2}
-              aria-label={'delete about section'}
+              aria-label={'delete section'}
               icon={<BiHide />}
             />
           </Box>

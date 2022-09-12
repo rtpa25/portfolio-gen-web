@@ -1,7 +1,7 @@
 mutation Login($input: SignInInput!) {
   signIn(input: $input) {
     user {
-      ...UserData
+      ...AuthData
     }
     errors {
       ...FieldError
