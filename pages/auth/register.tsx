@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import { useRouter } from 'next/dist/client/router';
 import NextLink from 'next/link';
 import { InputField, Wrapper } from '../../components/zExporter';
-import { useRegisterMutation } from '../../generated/graphql';
+import { User, useRegisterMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
 import { setCurrentUserData } from '../../store/slices/currentUser.slice';
 import { toErrorMap } from '../../utils/toErrorMap';
@@ -34,7 +34,9 @@ const Register = () => {
               setErrors(toErrorMap(res.data.signUp.errors));
             } else if (res.data?.signUp.user) {
               await apolloClient.resetStore();
-              dispatch(setCurrentUserData({ user: res.data.signUp.user }));
+              dispatch(
+                setCurrentUserData({ user: res.data.signUp.user as User })
+              );
               router.push('/');
             }
           }}>

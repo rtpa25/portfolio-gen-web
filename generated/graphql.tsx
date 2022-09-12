@@ -16,6 +16,54 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type CreateExperienceInput = {
+  company: Scalars['String'];
+  current?: InputMaybe<Scalars['Boolean']>;
+  description: Scalars['String'];
+  from: Scalars['DateTime'];
+  title: Scalars['String'];
+  to: Scalars['DateTime'];
+};
+
+export type CreateProjectInput = {
+  demo: Scalars['String'];
+  description: Scalars['String'];
+  github: Scalars['String'];
+  imageUrl: Scalars['String'];
+  tech: Array<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type CreateSocialLinksInput = {
+  link: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type CreateTechInput = {
+  imageUrl: Scalars['String'];
+  name: Scalars['String'];
+  proficiency: Scalars['String'];
+};
+
+export type Experience = {
+  __typename?: 'Experience';
+  _id: Scalars['String'];
+  company: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  current: Scalars['Boolean'];
+  description: Scalars['String'];
+  from: Scalars['DateTime'];
+  title: Scalars['String'];
+  to: Scalars['DateTime'];
+  user: Scalars['String'];
+};
+
+export type ExperienceResponse = {
+  __typename?: 'ExperienceResponse';
+  errors?: Maybe<Array<FieldError>>;
+  experience?: Maybe<Experience>;
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -25,16 +73,68 @@ export type FieldError = {
 export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
+  createExperience: ExperienceResponse;
+  createProject: ProjectResponse;
+  createSocialLink: SocialLinkResponse;
+  createTech: TechResponse;
+  deleteExperience: Scalars['Boolean'];
+  deleteProject: Scalars['Boolean'];
+  deleteSocialLink: Scalars['Boolean'];
+  deleteTech: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   signIn: UserResponse;
   signOut: Scalars['Boolean'];
   signUp: UserResponse;
+  updateExperience: ExperienceResponse;
+  updateProject: ProjectResponse;
+  updateTech: TechResponse;
+  updateUserProfile: UserResponse;
 };
 
 
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationCreateExperienceArgs = {
+  input: CreateExperienceInput;
+};
+
+
+export type MutationCreateProjectArgs = {
+  input: CreateProjectInput;
+};
+
+
+export type MutationCreateSocialLinkArgs = {
+  input: CreateSocialLinksInput;
+};
+
+
+export type MutationCreateTechArgs = {
+  input: CreateTechInput;
+};
+
+
+export type MutationDeleteExperienceArgs = {
+  expId: Scalars['String'];
+};
+
+
+export type MutationDeleteProjectArgs = {
+  projectId: Scalars['String'];
+};
+
+
+export type MutationDeleteSocialLinkArgs = {
+  linkId: Scalars['String'];
+};
+
+
+export type MutationDeleteTechArgs = {
+  techId: Scalars['String'];
 };
 
 
@@ -50,6 +150,45 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput;
+};
+
+
+export type MutationUpdateExperienceArgs = {
+  input: UpdateExperienceInput;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  input: UpdateProjectInput;
+};
+
+
+export type MutationUpdateTechArgs = {
+  input: UpdateTechInput;
+};
+
+
+export type MutationUpdateUserProfileArgs = {
+  input: UpdateUserProfileInput;
+};
+
+export type Project = {
+  __typename?: 'Project';
+  _id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  demo: Scalars['String'];
+  description: Scalars['String'];
+  github: Scalars['String'];
+  imageUrl: Scalars['String'];
+  tech: Array<Scalars['String']>;
+  title: Scalars['String'];
+  user: Scalars['String'];
+};
+
+export type ProjectResponse = {
+  __typename?: 'ProjectResponse';
+  errors?: Maybe<Array<FieldError>>;
+  project?: Maybe<Project>;
 };
 
 export type Query = {
@@ -68,12 +207,80 @@ export type SignUpInput = {
   username: Scalars['String'];
 };
 
+export type SocialLinkResponse = {
+  __typename?: 'SocialLinkResponse';
+  errors?: Maybe<Array<FieldError>>;
+  socialLink?: Maybe<SocialLinks>;
+};
+
+export type SocialLinks = {
+  __typename?: 'SocialLinks';
+  _id: Scalars['String'];
+  link: Scalars['String'];
+  name: Scalars['String'];
+  user: Scalars['String'];
+};
+
+export type Tech = {
+  __typename?: 'Tech';
+  _id: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  imageUrl: Scalars['String'];
+  name: Scalars['String'];
+  proficiency: Scalars['String'];
+  user: Scalars['String'];
+};
+
+export type TechResponse = {
+  __typename?: 'TechResponse';
+  errors?: Maybe<Array<FieldError>>;
+  tech?: Maybe<Tech>;
+};
+
+export type UpdateExperienceInput = {
+  _id: Scalars['String'];
+  company?: InputMaybe<Scalars['String']>;
+  current?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
+  to?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type UpdateProjectInput = {
+  _id: Scalars['String'];
+  demo?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+  tech?: InputMaybe<Array<Scalars['String']>>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateTechInput = {
+  _id: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  proficiency?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserProfileInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  oneLiner?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   _id: Scalars['String'];
   avatar: Scalars['String'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
+  experienceList: Array<Experience>;
+  oneLiner?: Maybe<Scalars['String']>;
+  projectList: Array<Project>;
+  socialLinks: Array<SocialLinks>;
+  status?: Maybe<Scalars['String']>;
+  techList: Array<Tech>;
   username: Scalars['String'];
 };
 
@@ -85,7 +292,7 @@ export type UserResponse = {
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string };
+export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> };
 
 export type ChangePasswordMutationVariables = Exact<{
   newPassword: Scalars['String'];
@@ -93,7 +300,7 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -107,7 +314,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', signIn: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type LoginMutation = { __typename?: 'Mutation', signIn: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -119,12 +326,19 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type RegisterMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
+export type UpdateUserProfileMutationVariables = Exact<{
+  input: UpdateUserProfileInput;
+}>;
+
+
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null };
 
 export const FieldErrorFragmentDoc = gql`
     fragment FieldError on FieldError {
@@ -139,6 +353,41 @@ export const UserDataFragmentDoc = gql`
   username
   createdAt
   avatar
+  oneLiner
+  status
+  techList {
+    _id
+    name
+    imageUrl
+    proficiency
+  }
+  projectList {
+    _id
+    createdAt
+    title
+    description
+    github
+    demo
+    tech
+    imageUrl
+  }
+  experienceList {
+    _id
+    createdAt
+    title
+    company
+    from
+    to
+    current
+    description
+    user
+  }
+  socialLinks {
+    _id
+    link
+    name
+    user
+  }
 }
     `;
 export const ChangePasswordDocument = gql`
@@ -320,6 +569,45 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateUserProfileDocument = gql`
+    mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
+  updateUserProfile(input: $input) {
+    user {
+      ...UserData
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}
+    ${UserDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
+export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+
+/**
+ * __useUpdateUserProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserProfileMutation, { data, loading, error }] = useUpdateUserProfileMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
+      }
+export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
+export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
+export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

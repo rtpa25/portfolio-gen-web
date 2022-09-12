@@ -45,8 +45,6 @@ const DataSection: FC<DataSectionProps> = ({
       break;
   }
 
-  console.log(DataModal);
-
   return (
     <Box ml={6} mt={20} w={'full'} bgColor={'gray.100'} rounded='base' p={4}>
       <Box>

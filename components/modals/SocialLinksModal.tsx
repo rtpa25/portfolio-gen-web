@@ -12,13 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { FC, useState } from 'react';
+import { ModalProps } from '../../utils/ModalProps';
 import { SocialLink, SocialLinkTypes } from '../../utils/SocialLinkTypes';
 import InputField from '../misc/InputField';
 
-interface AddSocialLinkModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+interface AddSocialLinkModalProps extends ModalProps {}
 
 const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
   isOpen,

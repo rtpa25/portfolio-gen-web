@@ -4,4 +4,39 @@ fragment UserData on User {
   username
   createdAt
   avatar
+  oneLiner
+  status
+  techList {
+    _id
+    name
+    imageUrl
+    proficiency
+  }
+  projectList {
+    _id
+    createdAt
+    title
+    description
+    github
+    demo
+    tech
+    imageUrl
+  }
+  experienceList {
+    _id
+    createdAt
+    title
+    company
+    from
+    to
+    current
+    description
+    user
+  }
+  socialLinks {
+    _id
+    link
+    name
+    user
+  }
 }

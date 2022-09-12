@@ -3,9 +3,9 @@ import { Box, Button, Flex, Link, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import InputField from '../../components/InputField';
-import Wrapper from '../../components/Wrapper';
-import { useLoginMutation } from '../../generated/graphql';
+import InputField from '../../components/misc/InputField';
+import Wrapper from '../../components/misc/Wrapper';
+import { useLoginMutation, User } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
 import { setCurrentUserData } from '../../store/slices/currentUser.slice';
 import { toErrorMap } from '../../utils/toErrorMap';
@@ -35,7 +35,9 @@ const Login = () => {
               setErrors(toErrorMap(res.data?.signIn.errors));
             } else if (res.data?.signIn.user) {
               await apolloClient.resetStore();
-              dispatch(setCurrentUserData({ user: res.data.signIn.user }));
+              dispatch(
+                setCurrentUserData({ user: res.data.signIn.user as User })
+              );
               router.push('/');
             }
           }}>

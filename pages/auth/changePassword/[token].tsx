@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { InputField, Wrapper } from '../../../components/zExporter';
-import { useChangePasswordMutation } from '../../../generated/graphql';
+import { useChangePasswordMutation, User } from '../../../generated/graphql';
 import { useAppDispatch } from '../../../hooks/redux';
 import { setCurrentUserData } from '../../../store/slices/currentUser.slice';
 import { toErrorMap } from '../../../utils/toErrorMap';
@@ -42,7 +42,9 @@ const ChangePassword = () => {
             } else if (res.data?.changePassword.user) {
               await apolloClient.resetStore();
               dispatch(
-                setCurrentUserData({ user: res.data.changePassword.user })
+                setCurrentUserData({
+                  user: res.data.changePassword.user as User,
+                })
               );
               router.push('/');
             }

@@ -27,7 +27,7 @@ const NavBar: FC = () => {
 
   useEffect(() => {
     if (data?.me) {
-      dispatch(setCurrentUserData({ user: data.me }));
+      dispatch(setCurrentUserData({ user: data.me as User }));
     }
   }, [data?.me, dispatch]);
 
