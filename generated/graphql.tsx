@@ -263,6 +263,7 @@ export type UpdateTechInput = {
 };
 
 export type UpdateUserProfileInput = {
+  about?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
   oneLiner?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['String']>;
@@ -272,6 +273,7 @@ export type UpdateUserProfileInput = {
 export type User = {
   __typename?: 'User';
   _id: Scalars['String'];
+  about?: Maybe<Scalars['String']>;
   avatar: Scalars['String'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
@@ -294,7 +296,7 @@ export type AuthDataFragment = { __typename?: 'User', _id: string, email: string
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> };
+export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> };
 
 export type CreateSocialLinkMutationVariables = Exact<{
   input: CreateSocialLinksInput;
@@ -342,12 +344,12 @@ export type UpdateUserProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null };
 
 export const AuthDataFragmentDoc = gql`
     fragment AuthData on User {
@@ -372,6 +374,7 @@ export const UserDataFragmentDoc = gql`
   avatar
   oneLiner
   status
+  about
   techList {
     _id
     name

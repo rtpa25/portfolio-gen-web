@@ -6,6 +6,7 @@ fragment UserData on User {
   avatar
   oneLiner
   status
+  about
   techList {
     _id
     name
