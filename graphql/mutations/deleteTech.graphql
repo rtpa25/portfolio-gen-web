@@ -1,0 +1,3 @@
+mutation DeleteTech($techId: String!) {
+  deleteTech(techId: $techId)
+}

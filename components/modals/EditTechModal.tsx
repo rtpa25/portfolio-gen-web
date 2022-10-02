@@ -6,30 +6,31 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Select,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { FC, useState } from 'react';
-import { Tech, useAddTechMutation } from '../../generated/graphql';
+import { Tech, useUpdateTechMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
-import { addTechToList } from '../../store/slices/currentUser.slice';
+import { updateTechFromList } from '../../store/slices/currentUser.slice';
 import { ModalProps } from '../../utils/ModalProps';
 import { Proficiency, proficiencyList } from '../../utils/ProficiencyList';
-import { toErrorMap } from '../../utils/toErrorMap';
-import InputField from '../misc/InputField';
+import { InputField } from '../zExporter';
 
-interface AddTechStackModalProps extends ModalProps {}
+interface EditTechModalProps extends ModalProps {
+  tech: Tech;
+}
 
-const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
-  const [proficiency, setProficiency] =
-    useState<Proficiency['name']>('beginner');
+const EditTechModal: FC<EditTechModalProps> = ({ isOpen, onClose, tech }) => {
+  const [proficiency, setProficiency] = useState<Proficiency['name']>(
+    tech.proficiency as Proficiency['name']
+  );
 
-  const [addTech] = useAddTechMutation();
+  const [updateTech] = useUpdateTechMutation();
+
   const dispatch = useAppDispatch();
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='xl'>
       <ModalOverlay />
@@ -38,28 +39,29 @@ const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <Formik
-            initialValues={{ name: '', imageUrl: '' }}
+            initialValues={{ imageUrl: '' }}
             onSubmit={async (values, { setErrors }) => {
               try {
-                if (values.name.length === 0 || values.imageUrl.length === 0) {
-                  return;
-                }
-                const submittedData = { ...values, proficiency };
-                const { data } = await addTech({
+                await updateTech({
                   variables: {
-                    input: submittedData,
+                    input: {
+                      _id: tech._id,
+                      imageUrl: values.imageUrl,
+                      proficiency,
+                    },
                   },
                 });
-                if (data?.createTech.errors) {
-                  setErrors(toErrorMap(data.createTech.errors));
-                }
-
-                dispatch(addTechToList(data?.createTech.tech as Tech));
-
+                dispatch(
+                  updateTechFromList({
+                    _id: tech._id,
+                    imageUrl: values.imageUrl,
+                    proficiency,
+                  })
+                );
                 onClose();
               } catch (error) {
                 console.error(error);
-                setErrors({ name: 'Something went wrong' });
+                setErrors({ imageUrl: 'Something went wrong' });
               }
             }}>
             {({ isSubmitting }) => (
@@ -68,8 +70,9 @@ const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
                   <Box w={'75%'}>
                     <InputField
                       name={'name'}
-                      placeholder={'Tech'}
+                      placeholder={tech.name}
                       label={''}
+                      disabled={true}
                       type={'text'}
                       isPassword={false}
                       showFormLabel={false}
@@ -110,7 +113,7 @@ const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
                   mr={3}
                   isLoading={isSubmitting}
                   onClick={onClose}>
-                  Add Tech
+                  Update Tech
                 </Button>
               </Form>
             )}
@@ -121,4 +124,4 @@ const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddTechStackModal;
+export default EditTechModal;

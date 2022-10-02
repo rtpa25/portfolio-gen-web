@@ -1,4 +1,4 @@
-interface Proficiency {
+export interface Proficiency {
   id: number;
   name: 'beginner' | 'intermediate' | 'advanced';
 }
@@ -13,7 +13,7 @@ export const proficiencyList: Proficiency[] = [
     name: 'intermediate',
   },
   {
-    id: 2,
+    id: 3,
     name: 'advanced',
   },
 ];

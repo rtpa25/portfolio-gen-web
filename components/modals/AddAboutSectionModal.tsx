@@ -9,9 +9,9 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { FC } from 'react';
-import { User, useUpdateUserProfileMutation } from '../../generated/graphql';
+import { useUpdateUserProfileMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
-import { setCurrentUserData } from '../../store/slices/currentUser.slice';
+import { updateAbout } from '../../store/slices/currentUser.slice';
 import { ModalProps } from '../../utils/ModalProps';
 import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
@@ -36,6 +36,7 @@ const AddAboutSectionModal: FC<AddAboutSectionModalProps> = ({
             initialValues={{ about: '' }}
             onSubmit={async (values, { setErrors }) => {
               try {
+                if (values.about.length === 0) return;
                 const { data } = await updateProfile({
                   variables: {
                     input: {
@@ -43,15 +44,14 @@ const AddAboutSectionModal: FC<AddAboutSectionModalProps> = ({
                     },
                   },
                 });
-                if (data?.updateUserProfile.errors)
+                if (data?.updateUserProfile.errors) {
                   setErrors(toErrorMap(data.updateUserProfile.errors));
+                }
                 dispatch(
-                  setCurrentUserData({
-                    user: data?.updateUserProfile.user as User,
+                  updateAbout({
+                    about: data?.updateUserProfile.user?.about as string,
                   })
                 );
-                console.log(data?.updateUserProfile.user);
-
                 onClose();
               } catch (error) {
                 console.error(error);

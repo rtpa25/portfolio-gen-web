@@ -34,23 +34,9 @@ interface EditProfileModalProps extends ModalProps {}
 const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
   const currentUser = useAppSelector((state) => state.currentUser.user);
   const fileSelectorRef: LegacyRef<HTMLInputElement> = useRef(null);
-  const [selectedAvatar, setSelectedAvatar] = useState<File>();
   const [updateProfile] = useUpdateUserProfileMutation();
   const dispatch = useAppDispatch();
   const [avatarUrlFromFirebase, setAvatarUrlFromFirebase] = useState('');
-
-  const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedAvatar(e.target.files![0]);
-    if (!selectedAvatar) return;
-    const imageRef = ref(storage, `images/${selectedAvatar.name + v4()}`);
-    uploadBytes(imageRef, selectedAvatar).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        console.log(url);
-
-        setAvatarUrlFromFirebase(url);
-      });
-    });
-  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -93,7 +79,15 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
                 variant='flushed'
                 display={'none'}
                 onChange={(e) => {
-                  uploadFile(e);
+                  const imageRef = ref(
+                    storage,
+                    `images/${e.target.files![0].name + v4()}`
+                  );
+                  uploadBytes(imageRef, e.target.files![0]).then((snapshot) => {
+                    getDownloadURL(snapshot.ref).then((url) => {
+                      setAvatarUrlFromFirebase(url);
+                    });
+                  });
                 }}
               />
             </Box>

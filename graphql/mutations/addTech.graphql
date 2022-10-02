@@ -1,0 +1,10 @@
+mutation AddTech($input: CreateTechInput!) {
+  createTech(input: $input) {
+    tech {
+      ...TechData
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}

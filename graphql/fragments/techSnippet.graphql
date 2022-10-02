@@ -1,0 +1,8 @@
+fragment TechData on Tech {
+  _id
+  name
+  createdAt
+  imageUrl
+  proficiency
+  user
+}

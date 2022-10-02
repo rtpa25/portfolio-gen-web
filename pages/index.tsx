@@ -61,7 +61,7 @@ const Home = () => {
           heading={'About'}
           sectionAddHeading={'Share something about yourself'}
           sectionAddBody={`
-            Let people know who you are and how you work. Make sure to{' '}
+            Let people know who you are and how you work. Make sure to
             describe your style of working to the world in a clear and
             concise way
           `}

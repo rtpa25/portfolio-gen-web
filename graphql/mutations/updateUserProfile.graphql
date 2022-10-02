@@ -1,7 +1,8 @@
 mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
   updateUserProfile(input: $input) {
     user {
-      ...UserData
+      _id
+      about
     }
     errors {
       ...FieldError

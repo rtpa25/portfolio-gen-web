@@ -31,6 +31,7 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
   AddSocialLinkModalOnClose,
 }) => {
   const currentUser = useAppSelector((state) => state.currentUser.user);
+  console.log(currentUser);
 
   return (
     <Box>

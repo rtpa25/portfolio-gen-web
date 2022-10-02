@@ -296,6 +296,8 @@ export type AuthDataFragment = { __typename?: 'User', _id: string, email: string
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
+export type TechDataFragment = { __typename?: 'Tech', _id: string, name: string, createdAt: any, imageUrl: string, proficiency: string, user: string };
+
 export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> };
 
 export type CreateSocialLinkMutationVariables = Exact<{
@@ -305,6 +307,13 @@ export type CreateSocialLinkMutationVariables = Exact<{
 
 export type CreateSocialLinkMutation = { __typename?: 'Mutation', createSocialLink: { __typename?: 'SocialLinkResponse', socialLink?: { __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
+export type AddTechMutationVariables = Exact<{
+  input: CreateTechInput;
+}>;
+
+
+export type AddTechMutation = { __typename?: 'Mutation', createTech: { __typename?: 'TechResponse', tech?: { __typename?: 'Tech', _id: string, name: string, createdAt: any, imageUrl: string, proficiency: string, user: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
 export type ChangePasswordMutationVariables = Exact<{
   newPassword: Scalars['String'];
   token: Scalars['String'];
@@ -312,6 +321,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
+export type DeleteTechMutationVariables = Exact<{
+  techId: Scalars['String'];
+}>;
+
+
+export type DeleteTechMutation = { __typename?: 'Mutation', deleteTech: boolean };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -339,12 +355,19 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', signUp: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
+export type UpdateTechMutationVariables = Exact<{
+  input: UpdateTechInput;
+}>;
+
+
+export type UpdateTechMutation = { __typename?: 'Mutation', updateTech: { __typename?: 'TechResponse', tech?: { __typename?: 'Tech', _id: string, name: string, createdAt: any, imageUrl: string, proficiency: string, user: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
 export type UpdateUserProfileMutationVariables = Exact<{
   input: UpdateUserProfileInput;
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'UserResponse', user?: { __typename?: 'User', _id: string, about?: string | null } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -363,6 +386,16 @@ export const FieldErrorFragmentDoc = gql`
     fragment FieldError on FieldError {
   field
   message
+}
+    `;
+export const TechDataFragmentDoc = gql`
+    fragment TechData on Tech {
+  _id
+  name
+  createdAt
+  imageUrl
+  proficiency
+  user
 }
     `;
 export const UserDataFragmentDoc = gql`
@@ -452,6 +485,45 @@ export function useCreateSocialLinkMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateSocialLinkMutationHookResult = ReturnType<typeof useCreateSocialLinkMutation>;
 export type CreateSocialLinkMutationResult = Apollo.MutationResult<CreateSocialLinkMutation>;
 export type CreateSocialLinkMutationOptions = Apollo.BaseMutationOptions<CreateSocialLinkMutation, CreateSocialLinkMutationVariables>;
+export const AddTechDocument = gql`
+    mutation AddTech($input: CreateTechInput!) {
+  createTech(input: $input) {
+    tech {
+      ...TechData
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}
+    ${TechDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
+export type AddTechMutationFn = Apollo.MutationFunction<AddTechMutation, AddTechMutationVariables>;
+
+/**
+ * __useAddTechMutation__
+ *
+ * To run a mutation, you first call `useAddTechMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTechMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTechMutation, { data, loading, error }] = useAddTechMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddTechMutation(baseOptions?: Apollo.MutationHookOptions<AddTechMutation, AddTechMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddTechMutation, AddTechMutationVariables>(AddTechDocument, options);
+      }
+export type AddTechMutationHookResult = ReturnType<typeof useAddTechMutation>;
+export type AddTechMutationResult = Apollo.MutationResult<AddTechMutation>;
+export type AddTechMutationOptions = Apollo.BaseMutationOptions<AddTechMutation, AddTechMutationVariables>;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($newPassword: String!, $token: String!) {
   changePassword(newPassword: $newPassword, token: $token) {
@@ -492,6 +564,37 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const DeleteTechDocument = gql`
+    mutation DeleteTech($techId: String!) {
+  deleteTech(techId: $techId)
+}
+    `;
+export type DeleteTechMutationFn = Apollo.MutationFunction<DeleteTechMutation, DeleteTechMutationVariables>;
+
+/**
+ * __useDeleteTechMutation__
+ *
+ * To run a mutation, you first call `useDeleteTechMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTechMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTechMutation, { data, loading, error }] = useDeleteTechMutation({
+ *   variables: {
+ *      techId: // value for 'techId'
+ *   },
+ * });
+ */
+export function useDeleteTechMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTechMutation, DeleteTechMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTechMutation, DeleteTechMutationVariables>(DeleteTechDocument, options);
+      }
+export type DeleteTechMutationHookResult = ReturnType<typeof useDeleteTechMutation>;
+export type DeleteTechMutationResult = Apollo.MutationResult<DeleteTechMutation>;
+export type DeleteTechMutationOptions = Apollo.BaseMutationOptions<DeleteTechMutation, DeleteTechMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
@@ -631,19 +734,58 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const UpdateUserProfileDocument = gql`
-    mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
-  updateUserProfile(input: $input) {
-    user {
-      ...UserData
+export const UpdateTechDocument = gql`
+    mutation UpdateTech($input: UpdateTechInput!) {
+  updateTech(input: $input) {
+    tech {
+      ...TechData
     }
     errors {
       ...FieldError
     }
   }
 }
-    ${UserDataFragmentDoc}
+    ${TechDataFragmentDoc}
 ${FieldErrorFragmentDoc}`;
+export type UpdateTechMutationFn = Apollo.MutationFunction<UpdateTechMutation, UpdateTechMutationVariables>;
+
+/**
+ * __useUpdateTechMutation__
+ *
+ * To run a mutation, you first call `useUpdateTechMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTechMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTechMutation, { data, loading, error }] = useUpdateTechMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateTechMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTechMutation, UpdateTechMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTechMutation, UpdateTechMutationVariables>(UpdateTechDocument, options);
+      }
+export type UpdateTechMutationHookResult = ReturnType<typeof useUpdateTechMutation>;
+export type UpdateTechMutationResult = Apollo.MutationResult<UpdateTechMutation>;
+export type UpdateTechMutationOptions = Apollo.BaseMutationOptions<UpdateTechMutation, UpdateTechMutationVariables>;
+export const UpdateUserProfileDocument = gql`
+    mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
+  updateUserProfile(input: $input) {
+    user {
+      _id
+      about
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}
+    ${FieldErrorFragmentDoc}`;
 export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
 
 /**
