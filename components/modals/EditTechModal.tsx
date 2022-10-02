@@ -35,7 +35,7 @@ const EditTechModal: FC<EditTechModalProps> = ({ isOpen, onClose, tech }) => {
     <Modal isOpen={isOpen} onClose={onClose} size='xl'>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Tech</ModalHeader>
+        <ModalHeader>Update Tech</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Formik

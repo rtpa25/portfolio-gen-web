@@ -1,0 +1,11 @@
+fragment ExperienceData on Experience {
+  _id
+  createdAt
+  title
+  company
+  from
+  to
+  current
+  description
+  user
+}

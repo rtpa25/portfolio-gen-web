@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
+  Experience,
   SocialLinks,
   Tech,
+  UpdateExperienceInput,
   UpdateTechInput,
   User,
 } from '../../generated/graphql';
@@ -79,6 +81,42 @@ export const CurrentUserDataSlice = createSlice({
       );
       state.user!.techList = newTechList ? newTechList : [];
     },
+
+    addExperienceToUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<Experience>
+    ) {
+      state.user?.experienceList.push(action.payload);
+    },
+
+    updateExperienceOfUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<UpdateExperienceInput>
+    ) {
+      state.user?.experienceList.map((experience) => {
+        if (experience._id === action.payload._id) {
+          if (action.payload.description) {
+            experience.description = action.payload.description;
+          }
+          if (action.payload.from) {
+            experience.from = action.payload.from;
+          }
+          if (action.payload.to) {
+            experience.to = action.payload.to;
+          }
+        }
+      });
+    },
+
+    deleteExperienceFromUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<{ expId: string }>
+    ) {
+      const newExpList = state.user!.experienceList!.filter(
+        (exp) => exp._id !== action.payload.expId
+      );
+      state.user!.experienceList = newExpList ? newExpList : [];
+    },
   },
 });
 
@@ -89,6 +127,9 @@ export const {
   addTechToList,
   deleteTechFromList,
   updateTechFromList,
+  addExperienceToUser,
+  deleteExperienceFromUser,
+  updateExperienceOfUser,
 } = CurrentUserDataSlice.actions;
 
 export default CurrentUserDataSlice.reducer;

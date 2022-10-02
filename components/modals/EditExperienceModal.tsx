@@ -1,79 +1,92 @@
 import {
   Box,
-  Button,
-  Checkbox,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
   Flex,
   FormLabel,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
+  Checkbox,
+  Button,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import { FC, useState } from 'react';
 import {
+  useCreateExperienceMutation,
   CreateExperienceInput,
   Experience,
-  useCreateExperienceMutation,
+  useUpdateExperienceMutation,
 } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
-import { addExperienceToUser } from '../../store/slices/currentUser.slice';
+import {
+  addExperienceToUser,
+  updateExperienceOfUser,
+} from '../../store/slices/currentUser.slice';
 import { emitCurrentDate } from '../../utils/emitCurrentDate';
 import { ModalProps } from '../../utils/ModalProps';
 import { toErrorMap } from '../../utils/toErrorMap';
-import InputField from '../misc/InputField';
+import { InputField } from '../zExporter';
 
-interface AddExperienceModalProps extends ModalProps {}
+interface EditExperienceModalProps extends ModalProps {
+  experience: Experience;
+}
 
-const AddExperienceModal: FC<AddExperienceModalProps> = ({
+const EditExperienceModal: FC<EditExperienceModalProps> = ({
   isOpen,
   onClose,
+  experience,
 }) => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(experience.from);
+  const [endDate, setEndDate] = useState(experience.to);
   const [current, setCurrent] = useState(false);
 
-  const [createExperience] = useCreateExperienceMutation();
+  // const [createExperience] = useCreateExperienceMutation();
   const dispatch = useAppDispatch();
+
+  const [updateExperience] = useUpdateExperienceMutation();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size='xl'>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Experience</ModalHeader>
+        <ModalHeader>Update Experience</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Formik
-            initialValues={{ title: '', company: '', description: '' }}
+            initialValues={{ description: '' }}
             onSubmit={async (values, { setErrors }) => {
               try {
-                if (startDate === '' || (endDate === '' && !current)) return;
-                let input: CreateExperienceInput = {
-                  title: values.title,
-                  company: values.company,
-                  description: values.description,
-                  from: startDate,
-                  to: current ? emitCurrentDate() : endDate,
-                  current,
-                };
-                const { data } = await createExperience({
-                  variables: { input },
+                const { data } = await updateExperience({
+                  variables: {
+                    input: {
+                      _id: experience._id,
+                      description: values.description,
+                      from: startDate,
+                      to: current ? emitCurrentDate() : endDate,
+                      current,
+                    },
+                  },
                 });
-                if (data?.createExperience.errors) {
-                  setErrors(toErrorMap(data.createExperience.errors));
+                if (data?.updateExperience.errors) {
+                  setErrors(toErrorMap(data.updateExperience.errors));
                 }
+
                 dispatch(
-                  addExperienceToUser(
-                    data?.createExperience.experience as Experience
-                  )
+                  updateExperienceOfUser({
+                    _id: experience._id,
+                    description: data?.updateExperience.experience?.description,
+                    from: data?.updateExperience.experience?.from,
+                    to: data?.updateExperience.experience?.to,
+                    current: data?.updateExperience.experience?.current,
+                  })
                 );
                 onClose();
               } catch (error) {
-                console.log(error);
-                setErrors({ title: 'Something went wrong' });
+                console.error(error);
+                setErrors({ description: 'Something went wrong' });
               }
             }}>
             {({ isSubmitting }) => (
@@ -81,10 +94,11 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
                 <Box mb={2}>
                   <InputField
                     name={'title'}
-                    placeholder={'software engineering intern'}
+                    placeholder={experience.title}
                     label={'Title'}
                     type={'text'}
                     isPassword={false}
+                    disabled={true}
                     showFormLabel={true}
                   />
                 </Box>
@@ -92,10 +106,11 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
                 <Box my={2}>
                   <InputField
                     name={'company'}
-                    placeholder={'SuperTokens'}
+                    placeholder={experience.company}
                     label={'Company'}
                     type={'text'}
                     isPassword={false}
+                    disabled={true}
                     showFormLabel={true}
                   />
                 </Box>
@@ -137,7 +152,8 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
                 <Box my={2}>
                   <InputField
                     name={'description'}
-                    placeholder={'description...'}
+                    placeholder={'Description...'}
+                    defaultValue={experience.description}
                     label={'Description'}
                     type={'text'}
                     isPassword={false}
@@ -153,7 +169,7 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
                     type='submit'
                     isLoading={isSubmitting}
                     onClick={onClose}>
-                    Add Experience
+                    Update Experience
                   </Button>
                 </Box>
               </Form>
@@ -165,4 +181,4 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
   );
 };
 
-export default AddExperienceModal;
+export default EditExperienceModal;
