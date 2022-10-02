@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
   Experience,
+  Project,
   SocialLinks,
   Tech,
   UpdateExperienceInput,
@@ -117,6 +118,13 @@ export const CurrentUserDataSlice = createSlice({
       );
       state.user!.experienceList = newExpList ? newExpList : [];
     },
+
+    addProjectToUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<Project>
+    ) {
+      state.user?.projectList.push(action.payload);
+    },
   },
 });
 
@@ -130,6 +138,7 @@ export const {
   addExperienceToUser,
   deleteExperienceFromUser,
   updateExperienceOfUser,
+  addProjectToUser,
 } = CurrentUserDataSlice.actions;
 
 export default CurrentUserDataSlice.reducer;

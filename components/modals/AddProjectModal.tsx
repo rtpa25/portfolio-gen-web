@@ -10,12 +10,20 @@ import {
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import { FC } from 'react';
+import { Project, useCreateProjectMutation } from '../../generated/graphql';
+import { useAppDispatch } from '../../hooks/redux';
+import { addProjectToUser } from '../../store/slices/currentUser.slice';
+import { commaSeparatedToArray } from '../../utils/commaSeparetedToArray';
 import { ModalProps } from '../../utils/ModalProps';
+import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
 
 interface AddProjectModalProps extends ModalProps {}
 
 const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
+  const dispatch = useAppDispatch();
+  const [createProject] = useCreateProjectMutation();
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
       <ModalOverlay />
@@ -29,11 +37,30 @@ const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
               description: '',
               github: '',
               demo: '',
-              tech: [''],
+              tech: '',
               imageUrl: '',
             }}
             onSubmit={async (values, { setErrors }) => {
-              console.log(values);
+              try {
+                const { data } = await createProject({
+                  variables: {
+                    input: {
+                      ...values,
+                      tech: commaSeparatedToArray(values.tech),
+                    },
+                  },
+                });
+                if (data?.createProject.errors) {
+                  setErrors(toErrorMap(data.createProject.errors));
+                }
+                dispatch(
+                  addProjectToUser(data?.createProject.project as Project)
+                );
+              } catch (error) {
+                console.error(error);
+                setErrors({ title: 'Something went wrong' });
+              }
+              onClose();
             }}>
             {({ isSubmitting }) => (
               <Form>

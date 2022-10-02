@@ -298,6 +298,8 @@ export type ExperienceDataFragment = { __typename?: 'Experience', _id: string, c
 
 export type FieldErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
+export type ProjectDataFragment = { __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string, user: string };
+
 export type TechDataFragment = { __typename?: 'Tech', _id: string, name: string, createdAt: any, imageUrl: string, proficiency: string, user: string };
 
 export type UserDataFragment = { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> };
@@ -308,6 +310,13 @@ export type CreateSocialLinkMutationVariables = Exact<{
 
 
 export type CreateSocialLinkMutation = { __typename?: 'Mutation', createSocialLink: { __typename?: 'SocialLinkResponse', socialLink?: { __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+
+export type CreateProjectMutationVariables = Exact<{
+  input: CreateProjectInput;
+}>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'ProjectResponse', project?: { __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string, user: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type AddTechMutationVariables = Exact<{
   input: CreateTechInput;
@@ -424,6 +433,19 @@ export const FieldErrorFragmentDoc = gql`
   message
 }
     `;
+export const ProjectDataFragmentDoc = gql`
+    fragment ProjectData on Project {
+  _id
+  createdAt
+  title
+  description
+  github
+  demo
+  tech
+  imageUrl
+  user
+}
+    `;
 export const TechDataFragmentDoc = gql`
     fragment TechData on Tech {
   _id
@@ -521,6 +543,45 @@ export function useCreateSocialLinkMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateSocialLinkMutationHookResult = ReturnType<typeof useCreateSocialLinkMutation>;
 export type CreateSocialLinkMutationResult = Apollo.MutationResult<CreateSocialLinkMutation>;
 export type CreateSocialLinkMutationOptions = Apollo.BaseMutationOptions<CreateSocialLinkMutation, CreateSocialLinkMutationVariables>;
+export const CreateProjectDocument = gql`
+    mutation CreateProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    project {
+      ...ProjectData
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}
+    ${ProjectDataFragmentDoc}
+${FieldErrorFragmentDoc}`;
+export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
+
+/**
+ * __useCreateProjectMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
+      }
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
 export const AddTechDocument = gql`
     mutation AddTech($input: CreateTechInput!) {
   createTech(input: $input) {
