@@ -15,6 +15,7 @@ const Wrapper: FC<WrapperProps> = ({ children, variant }) => {
         mt={8}
         maxW={variant === 'regular' ? '800px' : '500px'}
         w='100%'
+        ml={0}
         mx={'auto'}>
         {children}
       </Box>

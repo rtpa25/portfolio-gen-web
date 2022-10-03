@@ -106,7 +106,7 @@ const DataSection: FC<DataSectionProps> = ({
   }
 
   return (
-    <Box ml={6} mt={20} w={'full'} bgColor={'gray.50'} rounded='base' p={4}>
+    <Box ml={0} mt={20} w={'full'} bgColor={'gray.50'} rounded='base' p={4}>
       <Box>
         <Flex justifyContent={'space-between'}>
           <Heading size={'md'} fontWeight='semibold'>

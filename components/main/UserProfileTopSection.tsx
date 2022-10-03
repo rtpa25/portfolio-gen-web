@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
-import { ProfileQuery, useProfileQuery, User } from '../../generated/graphql';
+import { ProfileQuery } from '../../generated/graphql';
 import { useAppSelector } from '../../hooks/redux';
 import EditProfileModal from '../modals/EditProfileModal';
 import Links from './Links';
@@ -34,7 +34,6 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
   userProfileData,
 }) => {
   const authenticatedUser = useAppSelector((state) => state.currentUser.user);
-  console.log(userProfileData);
 
   return (
     <Box>
@@ -94,14 +93,14 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
 
       {!userProfileData && (
         <Flex
-          ml={6}
           mt={10}
+          wrap={'wrap'}
           w={'full'}
           bgColor='gray.100'
           rounded='base'
           p={4}
           justifyContent='space-between'>
-          <Flex>
+          <Flex wrap={'wrap'}>
             <a
               href={`http://localhost:3000/${authenticatedUser?._id}`}
               target='_blank'
