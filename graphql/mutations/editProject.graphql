@@ -1,0 +1,10 @@
+mutation UpdateProject($input: UpdateProjectInput!) {
+  updateProject(input: $input) {
+    project {
+      ...ProjectData
+    }
+    errors {
+      ...FieldError
+    }
+  }
+}

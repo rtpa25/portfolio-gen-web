@@ -31,7 +31,7 @@ const AddTechStackModal: FC<AddTechStackModalProps> = ({ isOpen, onClose }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add Tech</ModalHeader>

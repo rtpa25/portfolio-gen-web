@@ -1,28 +1,34 @@
 import {
+  Box,
+  Button,
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Button,
-  Box,
+  ModalOverlay,
 } from '@chakra-ui/react';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { FC } from 'react';
-import { Project, useCreateProjectMutation } from '../../generated/graphql';
+import { Project, useUpdateProjectMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
-import { addProjectToUser } from '../../store/slices/currentUser.slice';
+import { updateProjectOfUser } from '../../store/slices/currentUser.slice';
 import { commaSeparatedToArray } from '../../utils/commaSeparetedToArray';
 import { ModalProps } from '../../utils/ModalProps';
 import { toErrorMap } from '../../utils/toErrorMap';
-import InputField from '../misc/InputField';
+import { InputField } from '../zExporter';
 
-interface AddProjectModalProps extends ModalProps {}
+interface EditProjectModalProps extends ModalProps {
+  project: Project;
+}
 
-const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
+const EditProjectModal: FC<EditProjectModalProps> = ({
+  isOpen,
+  onClose,
+  project,
+}) => {
+  const [updateProject] = useUpdateProjectMutation();
   const dispatch = useAppDispatch();
-  const [createProject] = useCreateProjectMutation();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'2xl'} isCentered>
@@ -33,28 +39,29 @@ const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
         <ModalBody>
           <Formik
             initialValues={{
-              title: '',
-              description: '',
-              github: '',
-              demo: '',
-              tech: '',
-              imageUrl: '',
+              title: project.title,
+              description: project.description,
+              github: project.github,
+              demo: project.demo,
+              tech: project.tech.join(','),
+              imageUrl: project.imageUrl,
             }}
             onSubmit={async (values, { setErrors }) => {
               try {
-                const { data } = await createProject({
+                const { data } = await updateProject({
                   variables: {
                     input: {
                       ...values,
                       tech: commaSeparatedToArray(values.tech),
+                      _id: project._id,
                     },
                   },
                 });
-                if (data?.createProject.errors) {
-                  setErrors(toErrorMap(data.createProject.errors));
+                if (data?.updateProject.errors) {
+                  setErrors(toErrorMap(data.updateProject.errors));
                 }
                 dispatch(
-                  addProjectToUser(data?.createProject.project as Project)
+                  updateProjectOfUser(data?.updateProject.project as Project)
                 );
               } catch (error) {
                 console.error(error);
@@ -143,7 +150,7 @@ const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
                   mr={3}
                   isLoading={isSubmitting}
                   onClick={onClose}>
-                  Add Project
+                  Update Project
                 </Button>
               </Form>
             )}
@@ -154,4 +161,4 @@ const AddProjectModal: FC<AddProjectModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddProjectModal;
+export default EditProjectModal;

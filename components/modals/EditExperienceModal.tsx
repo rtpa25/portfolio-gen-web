@@ -43,20 +43,19 @@ const EditExperienceModal: FC<EditExperienceModalProps> = ({
   const [endDate, setEndDate] = useState(experience.to);
   const [current, setCurrent] = useState(false);
 
-  // const [createExperience] = useCreateExperienceMutation();
   const dispatch = useAppDispatch();
 
   const [updateExperience] = useUpdateExperienceMutation();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update Experience</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Formik
-            initialValues={{ description: '' }}
+            initialValues={{ description: experience.description }}
             onSubmit={async (values, { setErrors }) => {
               try {
                 const { data } = await updateExperience({
@@ -152,8 +151,6 @@ const EditExperienceModal: FC<EditExperienceModalProps> = ({
                 <Box my={2}>
                   <InputField
                     name={'description'}
-                    placeholder={'Description...'}
-                    defaultValue={experience.description}
                     label={'Description'}
                     type={'text'}
                     isPassword={false}

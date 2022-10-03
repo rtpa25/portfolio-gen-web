@@ -26,7 +26,7 @@ const AddAboutSectionModal: FC<AddAboutSectionModalProps> = ({
   const dispatch = useAppDispatch();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={'2xl'}>
+    <Modal isOpen={isOpen} onClose={onClose} size={'2xl'} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add About</ModalHeader>

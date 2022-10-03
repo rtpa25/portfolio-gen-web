@@ -37,7 +37,7 @@ const DeleteTechPopupModal: FC<DeleteTechPopupModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Delete Tech</ModalHeader>

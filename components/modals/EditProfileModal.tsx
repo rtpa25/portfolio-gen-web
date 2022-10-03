@@ -39,7 +39,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
   const [avatarUrlFromFirebase, setAvatarUrlFromFirebase] = useState('');
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Edit Profile</ModalHeader>

@@ -6,6 +6,7 @@ import {
   SocialLinks,
   Tech,
   UpdateExperienceInput,
+  UpdateProjectInput,
   UpdateTechInput,
   User,
 } from '../../generated/graphql';
@@ -125,6 +126,44 @@ export const CurrentUserDataSlice = createSlice({
     ) {
       state.user?.projectList.push(action.payload);
     },
+
+    updateProjectOfUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<UpdateProjectInput>
+    ) {
+      state.user?.projectList.map((project) => {
+        if (project._id === action.payload._id) {
+          if (action.payload.description) {
+            project.description = action.payload.description;
+          }
+          if (action.payload.demo) {
+            project.demo = action.payload.demo;
+          }
+          if (action.payload.github) {
+            project.github = action.payload.github;
+          }
+          if (action.payload.imageUrl) {
+            project.imageUrl = action.payload.imageUrl;
+          }
+          if (action.payload.tech) {
+            project.tech = action.payload.tech;
+          }
+          if (action.payload.title) {
+            project.title = action.payload.title;
+          }
+        }
+      });
+    },
+
+    deleteProjectFromUser(
+      state: CurrentUserDataState,
+      action: PayloadAction<{ projectId: string }>
+    ) {
+      const newProjectList = state.user!.projectList!.filter(
+        (project) => project._id !== action.payload.projectId
+      );
+      state.user!.projectList = newProjectList ? newProjectList : [];
+    },
   },
 });
 
@@ -139,6 +178,8 @@ export const {
   deleteExperienceFromUser,
   updateExperienceOfUser,
   addProjectToUser,
+  deleteProjectFromUser,
+  updateProjectOfUser,
 } = CurrentUserDataSlice.actions;
 
 export default CurrentUserDataSlice.reducer;

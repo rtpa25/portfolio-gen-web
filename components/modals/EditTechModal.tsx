@@ -17,6 +17,7 @@ import { useAppDispatch } from '../../hooks/redux';
 import { updateTechFromList } from '../../store/slices/currentUser.slice';
 import { ModalProps } from '../../utils/ModalProps';
 import { Proficiency, proficiencyList } from '../../utils/ProficiencyList';
+import { toErrorMap } from '../../utils/toErrorMap';
 import { InputField } from '../zExporter';
 
 interface EditTechModalProps extends ModalProps {
@@ -32,7 +33,7 @@ const EditTechModal: FC<EditTechModalProps> = ({ isOpen, onClose, tech }) => {
 
   const dispatch = useAppDispatch();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update Tech</ModalHeader>
@@ -42,20 +43,27 @@ const EditTechModal: FC<EditTechModalProps> = ({ isOpen, onClose, tech }) => {
             initialValues={{ imageUrl: '' }}
             onSubmit={async (values, { setErrors }) => {
               try {
-                await updateTech({
+                const { data } = await updateTech({
                   variables: {
                     input: {
                       _id: tech._id,
-                      imageUrl: values.imageUrl,
-                      proficiency,
+                      imageUrl:
+                        values.imageUrl.length > 0
+                          ? values.imageUrl
+                          : tech.imageUrl,
+                      proficiency:
+                        proficiency.length > 0 ? proficiency : tech.proficiency,
                     },
                   },
                 });
+                if (data?.updateTech.errors) {
+                  setErrors(toErrorMap(data.updateTech.errors));
+                }
                 dispatch(
                   updateTechFromList({
                     _id: tech._id,
-                    imageUrl: values.imageUrl,
-                    proficiency,
+                    imageUrl: data?.updateTech.tech?.imageUrl,
+                    proficiency: data?.updateTech.tech?.proficiency,
                   })
                 );
                 onClose();

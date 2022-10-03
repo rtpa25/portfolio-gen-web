@@ -1,6 +1,6 @@
-import { Flex, Box, Heading, Image, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Flex } from '@chakra-ui/react';
 import { useAppSelector } from '../../../hooks/redux';
+import FilledProjectIndividualComponent from './individualFilledComponents/FilledProjectIndividualComponent';
 
 const FilledProjectList = () => {
   const projectList = useAppSelector(
@@ -10,22 +10,10 @@ const FilledProjectList = () => {
     <Flex flexDirection={'column'}>
       {projectList?.map((project) => {
         return (
-          <Box key={project._id} my={4}>
-            <Heading size={'lg'} fontWeight='semibold' color={'gray.700'}>
-              {project.title}
-            </Heading>
-            <Flex>
-              <Image
-                borderRadius={'md'}
-                objectFit='cover'
-                src='https://bit.ly/dan-abramov'
-                alt='Dan Abramov'
-              />
-              <Box>
-                <Text>{project.description}</Text>
-              </Box>
-            </Flex>
-          </Box>
+          <FilledProjectIndividualComponent
+            key={project._id}
+            project={project}
+          />
         );
       })}
     </Flex>

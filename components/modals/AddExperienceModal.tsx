@@ -40,7 +40,7 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
   const dispatch = useAppDispatch();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add Experience</ModalHeader>
@@ -72,7 +72,7 @@ const AddExperienceModal: FC<AddExperienceModalProps> = ({
                 );
                 onClose();
               } catch (error) {
-                console.log(error);
+                console.error(error);
                 setErrors({ title: 'Something went wrong' });
               }
             }}>

@@ -31,7 +31,7 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
   const dispatch = useAppDispatch();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add Link</ModalHeader>
@@ -40,7 +40,6 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
           <Formik
             initialValues={{ link: '' }}
             onSubmit={async (values, { setErrors }) => {
-              console.log({ ...values, linkType });
               try {
                 const { data } = await addSocialLink({
                   variables: { input: { ...values, name: linkType } },

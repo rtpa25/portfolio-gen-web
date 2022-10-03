@@ -1,4 +1,4 @@
 export const commaSeparatedToArray = (commaSeparated: string) => {
   const array = commaSeparated.split(',');
-  return array;
+  return array.map((item) => item.trim());
 };
