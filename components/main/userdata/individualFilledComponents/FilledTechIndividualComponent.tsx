@@ -48,7 +48,9 @@ const FilledTechIndividualComponent: FC<FilledTechIndividualComponentProps> = ({
       <Flex>
         <Avatar name={tech.name} src={tech.imageUrl} mx={2} />
         <Flex alignItems={'center'}>
-          <Text mx={2}>{tech.name}</Text>
+          <Text mx={2} color='teal'>
+            {tech.name}
+          </Text>
           <Text mx={2} fontSize={'sm'} color='gray.500'>
             {tech.proficiency}
           </Text>

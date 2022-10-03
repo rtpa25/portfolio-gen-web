@@ -48,11 +48,11 @@ const FilledExperienceIndividualComponent: FC<
         transform: 'scale(1.01)',
       }}>
       <Box w={'20%'} fontSize={'md'} fontWeight='medium' color={'gray.900'}>
-        <Text>{experience.company}</Text>
+        <Text color={'teal'}>{experience.company}</Text>
       </Box>
       <Box w={'80%'}>
         <Flex justifyContent='space-between' alignItems={'center'}>
-          <Heading mb={2} size={'md'} fontWeight='semibold' color={'gray.700'}>
+          <Heading mb={2} size={'md'} fontWeight='semibold' color={'teal.700'}>
             {experience.title}
           </Heading>
           <Flex>

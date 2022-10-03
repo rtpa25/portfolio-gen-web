@@ -49,7 +49,7 @@ const FilledProjectIndividualComponent: FC<
       }}
       key={project._id}>
       <Flex justifyContent={'space-between'}>
-        <Heading size={'lg'} fontWeight='semibold' color={'gray.600'}>
+        <Heading size={'lg'} fontWeight='semibold' color={'teal.700'}>
           {project.title}
         </Heading>
         <Flex justifyContent={'space-evenly'} mr={6}>
@@ -118,7 +118,7 @@ const FilledProjectIndividualComponent: FC<
         <UnorderedList mx={0} my={4}>
           {project.tech.map((tech) => {
             return (
-              <ListItem display={'inline'} mr={2} key={tech}>
+              <ListItem color={'teal'} display={'inline'} mr={2} key={tech}>
                 {tech}
               </ListItem>
             );
