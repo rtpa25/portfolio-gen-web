@@ -20,11 +20,12 @@ import EditProjectModal from '../../../modals/EditProjectModal';
 interface FilledProjectIndividualComponentProps {
   project: Project;
   key: string;
+  isSelf: boolean;
 }
 
 const FilledProjectIndividualComponent: FC<
   FilledProjectIndividualComponentProps
-> = ({ key, project }) => {
+> = ({ project, isSelf }) => {
   const {
     isOpen: DeleteProjectModalIsOpen,
     onOpen: DeleteProjectModalOnOpen,
@@ -52,22 +53,24 @@ const FilledProjectIndividualComponent: FC<
         <Heading size={'lg'} fontWeight='semibold' color={'teal.700'}>
           {project.title}
         </Heading>
-        <Flex justifyContent={'space-evenly'} mr={6}>
-          <IconButton
-            aria-label={'delete'}
-            variant='ghost'
-            colorScheme={'red'}
-            onClick={DeleteProjectModalOnOpen}
-            icon={<AiFillDelete />}
-          />
-          <IconButton
-            aria-label={'edit'}
-            variant='ghost'
-            colorScheme={'teal'}
-            onClick={EditProjectModalOnOpen}
-            icon={<AiFillEdit />}
-          />
-        </Flex>
+        {isSelf && (
+          <Flex justifyContent={'space-evenly'} mr={6}>
+            <IconButton
+              aria-label={'delete'}
+              variant='ghost'
+              colorScheme={'red'}
+              onClick={DeleteProjectModalOnOpen}
+              icon={<AiFillDelete />}
+            />
+            <IconButton
+              aria-label={'edit'}
+              variant='ghost'
+              colorScheme={'teal'}
+              onClick={EditProjectModalOnOpen}
+              icon={<AiFillEdit />}
+            />
+          </Flex>
+        )}
       </Flex>
       <Flex my={4} justifyContent='space-between'>
         <Box
@@ -125,16 +128,20 @@ const FilledProjectIndividualComponent: FC<
           })}
         </UnorderedList>
       </Box>
-      <DeleteProjectModal
-        isOpen={DeleteProjectModalIsOpen}
-        onClose={DeleteProjectModalOnClose}
-        projectId={project._id}
-      />
-      <EditProjectModal
-        isOpen={EditProjectModalIsOpen}
-        onClose={EditProjectModalOnClose}
-        project={project}
-      />
+      {isSelf && (
+        <DeleteProjectModal
+          isOpen={DeleteProjectModalIsOpen}
+          onClose={DeleteProjectModalOnClose}
+          projectId={project._id}
+        />
+      )}
+      {isSelf && (
+        <EditProjectModal
+          isOpen={EditProjectModalIsOpen}
+          onClose={EditProjectModalOnClose}
+          project={project}
+        />
+      )}
     </Box>
   );
 };

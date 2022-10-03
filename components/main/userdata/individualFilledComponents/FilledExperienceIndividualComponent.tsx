@@ -19,11 +19,12 @@ import EditExperienceModal from '../../../modals/EditExperienceModal';
 interface FilledExperienceIndividualComponentProps {
   experience: Experience;
   key: string;
+  isSelf: boolean;
 }
 
 const FilledExperienceIndividualComponent: FC<
   FilledExperienceIndividualComponentProps
-> = ({ experience }) => {
+> = ({ experience, isSelf }) => {
   const {
     isOpen: DeleteExperienceModalIsOpen,
     onOpen: DeleteExperienceModalOnOpen,
@@ -55,22 +56,24 @@ const FilledExperienceIndividualComponent: FC<
           <Heading mb={2} size={'md'} fontWeight='semibold' color={'teal.700'}>
             {experience.title}
           </Heading>
-          <Flex>
-            <IconButton
-              aria-label={'delete'}
-              variant='ghost'
-              colorScheme={'red'}
-              onClick={DeleteExperienceModalOnOpen}
-              icon={<AiFillDelete />}
-            />
-            <IconButton
-              aria-label={'edit'}
-              variant='ghost'
-              colorScheme={'teal'}
-              onClick={EditExperienceModalOnOpen}
-              icon={<AiFillEdit />}
-            />
-          </Flex>
+          {isSelf && (
+            <Flex>
+              <IconButton
+                aria-label={'delete'}
+                variant='ghost'
+                colorScheme={'red'}
+                onClick={DeleteExperienceModalOnOpen}
+                icon={<AiFillDelete />}
+              />
+              <IconButton
+                aria-label={'edit'}
+                variant='ghost'
+                colorScheme={'teal'}
+                onClick={EditExperienceModalOnOpen}
+                icon={<AiFillEdit />}
+              />
+            </Flex>
+          )}
         </Flex>
         <Text my={2} fontSize={'md'} fontWeight='normal' color={'gray.600'}>
           {dateConverter(experience.from)} - {dateConverter(experience.to)}
@@ -91,16 +94,20 @@ const FilledExperienceIndividualComponent: FC<
           })}
         </UnorderedList>
       </Box>
-      <DeleteExperienceModal
-        isOpen={DeleteExperienceModalIsOpen}
-        onClose={DeleteExperienceModalOnClose}
-        expId={experience._id}
-      />
-      <EditExperienceModal
-        experience={experience}
-        isOpen={EditExperienceModalIsOpen}
-        onClose={EditExperienceModalOnClose}
-      />
+      {isSelf && (
+        <DeleteExperienceModal
+          isOpen={DeleteExperienceModalIsOpen}
+          onClose={DeleteExperienceModalOnClose}
+          expId={experience._id}
+        />
+      )}
+      {isSelf && (
+        <EditExperienceModal
+          experience={experience}
+          isOpen={EditExperienceModalIsOpen}
+          onClose={EditExperienceModalOnClose}
+        />
+      )}
     </Flex>
   );
 };

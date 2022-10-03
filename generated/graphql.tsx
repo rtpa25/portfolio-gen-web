@@ -194,6 +194,12 @@ export type ProjectResponse = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+  userProfile?: Maybe<User>;
+};
+
+
+export type QueryUserProfileArgs = {
+  id: Scalars['String'];
 };
 
 export type SignInInput = {
@@ -420,6 +426,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null };
+
+export type ProfileQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ProfileQuery = { __typename?: 'Query', userProfile?: { __typename?: 'User', _id: string, email: string, username: string, createdAt: any, avatar: string, oneLiner?: string | null, status?: string | null, about?: string | null, techList: Array<{ __typename?: 'Tech', _id: string, name: string, imageUrl: string, proficiency: string }>, projectList: Array<{ __typename?: 'Project', _id: string, createdAt: any, title: string, description: string, github: string, demo: string, tech: Array<string>, imageUrl: string }>, experienceList: Array<{ __typename?: 'Experience', _id: string, createdAt: any, title: string, company: string, from: any, to: any, current: boolean, description: string, user: string }>, socialLinks: Array<{ __typename?: 'SocialLinks', _id: string, link: string, name: string, user: string }> } | null };
 
 export const AuthDataFragmentDoc = gql`
     fragment AuthData on User {
@@ -1145,3 +1158,38 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const ProfileDocument = gql`
+    query Profile($id: String!) {
+  userProfile(id: $id) {
+    ...UserData
+  }
+}
+    ${UserDataFragmentDoc}`;
+
+/**
+ * __useProfileQuery__
+ *
+ * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+      }
+export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+        }
+export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
+export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
+export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;

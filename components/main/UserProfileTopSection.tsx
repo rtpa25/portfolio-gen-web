@@ -9,17 +9,19 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
+import { ProfileQuery, useProfileQuery, User } from '../../generated/graphql';
 import { useAppSelector } from '../../hooks/redux';
 import EditProfileModal from '../modals/EditProfileModal';
 import Links from './Links';
 
 interface UserProfileTopSectionProps {
-  EditProfileModalOnOpen: () => void;
-  EditProfileModalIsOpen: boolean;
-  EditProfileModalOnClose: () => void;
-  AddSocialLinkModalOnOpen: () => void;
-  AddSocialLinkModalIsOpen: boolean;
-  AddSocialLinkModalOnClose: () => void;
+  EditProfileModalOnOpen?: () => void;
+  EditProfileModalIsOpen?: boolean;
+  EditProfileModalOnClose?: () => void;
+  AddSocialLinkModalOnOpen?: () => void;
+  AddSocialLinkModalIsOpen?: boolean;
+  AddSocialLinkModalOnClose?: () => void;
+  userProfileData?: ProfileQuery | undefined;
 }
 
 const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
@@ -29,17 +31,27 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
   AddSocialLinkModalOnOpen,
   AddSocialLinkModalIsOpen,
   AddSocialLinkModalOnClose,
+  userProfileData,
 }) => {
-  const currentUser = useAppSelector((state) => state.currentUser.user);
+  const authenticatedUser = useAppSelector((state) => state.currentUser.user);
+  console.log(userProfileData);
 
   return (
     <Box>
       <Flex justifyContent={'space-between'} alignItems={'center'}>
         <Box position={'relative'}>
           <Avatar
-            name={currentUser?.username}
+            name={
+              userProfileData
+                ? userProfileData?.userProfile?.username
+                : authenticatedUser?.username
+            }
             mx={4}
-            src={currentUser?.avatar}
+            src={
+              userProfileData
+                ? userProfileData?.userProfile?.avatar
+                : authenticatedUser?.avatar
+            }
             cursor={'pointer'}
             size={'2xl'}
           />
@@ -56,61 +68,78 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
           </Box>
         </Box>
 
-        <Button
-          mt={20}
-          variant={'outline'}
-          textColor='teal'
-          borderColor={'teal'}
-          onClick={EditProfileModalOnOpen}>
-          <Text fontWeight={'medium'}>Edit Profile</Text>
-        </Button>
-
-        <EditProfileModal
-          isOpen={EditProfileModalIsOpen}
-          onClose={EditProfileModalOnClose}
-        />
-      </Flex>
-      <Links
-        onOpen={AddSocialLinkModalOnOpen}
-        isOpen={AddSocialLinkModalIsOpen}
-        onClose={AddSocialLinkModalOnClose}
-      />
-
-      <Flex
-        ml={6}
-        mt={10}
-        w={'full'}
-        bgColor='gray.100'
-        rounded='base'
-        p={4}
-        justifyContent='space-between'>
-        <Flex>
-          <IconButton
-            mr={4}
-            mt={1}
-            aria-label={'visit link'}
-            variant='outline'
+        {!userProfileData && (
+          <Button
+            mt={20}
+            variant={'outline'}
             textColor='teal'
             borderColor={'teal'}
-            icon={<BiLinkExternal />}
+            onClick={EditProfileModalOnOpen}>
+            <Text fontWeight={'medium'}>Edit Profile</Text>
+          </Button>
+        )}
+        {!userProfileData && (
+          <EditProfileModal
+            isOpen={EditProfileModalIsOpen as boolean}
+            onClose={EditProfileModalOnClose as () => void}
           />
-          <Box>
-            <Text fontSize={'sm'} color='gray.600'>
-              My Front Page:
-            </Text>
-            <Heading size={'md'} fontWeight='semibold'>
-              {'vansita.devfolio.com'}
-            </Heading>
-          </Box>
-        </Flex>
-        <Button
-          mt={1}
-          variant={'outline'}
-          textColor='teal'
-          borderColor={'teal'}>
-          <Text fontWeight={'medium'}>Visit</Text>
-        </Button>
+        )}
       </Flex>
+      <Links
+        onOpen={AddSocialLinkModalOnOpen as () => void}
+        isOpen={AddSocialLinkModalIsOpen as boolean}
+        onClose={AddSocialLinkModalOnClose as () => void}
+        userProfileData={userProfileData}
+      />
+
+      {!userProfileData && (
+        <Flex
+          ml={6}
+          mt={10}
+          w={'full'}
+          bgColor='gray.100'
+          rounded='base'
+          p={4}
+          justifyContent='space-between'>
+          <Flex>
+            <a
+              href={`http://localhost:3000/${authenticatedUser?._id}`}
+              target='_blank'
+              rel='noreferrer'>
+              <IconButton
+                mr={4}
+                mt={1}
+                aria-label={'visit link'}
+                variant='outline'
+                textColor='teal'
+                borderColor={'teal'}
+                icon={<BiLinkExternal />}
+              />
+            </a>
+
+            <Box>
+              <Text fontSize={'sm'} color='gray.600'>
+                My Front Page:
+              </Text>
+              <Heading size={'md'} fontWeight='semibold'>
+                {`localhost:3000/${authenticatedUser?._id}`}
+              </Heading>
+            </Box>
+          </Flex>
+          <a
+            href={`http://localhost:3000/${authenticatedUser?._id}`}
+            target='_blank'
+            rel='noreferrer'>
+            <Button
+              mt={1}
+              variant={'outline'}
+              textColor='teal'
+              borderColor={'teal'}>
+              <Text fontWeight={'medium'}>Visit</Text>
+            </Button>
+          </a>
+        </Flex>
+      )}
     </Box>
   );
 };

@@ -1,9 +1,11 @@
 import { Box, useDisclosure } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import {
   DataSection,
   UserProfileTopSection,
   Wrapper,
 } from '../components/zExporter';
+import { useMeQuery } from '../generated/graphql';
 
 const Home = () => {
   const {
@@ -41,6 +43,13 @@ const Home = () => {
     onOpen: AddProjectModalOnOpen,
     onClose: AddProjectModalOnClose,
   } = useDisclosure();
+
+  const { data, loading } = useMeQuery();
+  const router = useRouter();
+
+  if (!data?.me && !loading) {
+    router.push('/auth/login');
+  }
 
   return (
     <Wrapper variant='regular'>

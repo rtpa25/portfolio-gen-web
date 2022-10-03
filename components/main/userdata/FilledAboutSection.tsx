@@ -1,8 +1,15 @@
 import { Flex, Box, Text } from '@chakra-ui/react';
 import { FC } from 'react';
+import { ProfileQuery } from '../../../generated/graphql';
 import { useAppSelector } from '../../../hooks/redux';
 
-const FilledAboutSection: FC = () => {
+interface FilledAboutSectionProps {
+  userProfileData?: ProfileQuery | undefined;
+}
+
+const FilledAboutSection: FC<FilledAboutSectionProps> = ({
+  userProfileData,
+}) => {
   const userAboutData = useAppSelector(
     (state) => state.currentUser.user?.about
   );
@@ -18,7 +25,7 @@ const FilledAboutSection: FC = () => {
           lineHeight={'tall'}
           flexWrap='wrap'
           textAlign='left'>
-          {userAboutData}
+          {userProfileData ? userProfileData.userProfile?.about : userAboutData}
         </Text>
       </Flex>
     </Box>

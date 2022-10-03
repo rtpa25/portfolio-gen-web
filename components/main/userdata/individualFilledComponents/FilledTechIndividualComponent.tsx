@@ -14,10 +14,12 @@ import EditTechModal from '../../../modals/EditTechModal';
 interface FilledTechIndividualComponentProps {
   tech: Tech;
   key: string;
+  isSelf: boolean;
 }
 
 const FilledTechIndividualComponent: FC<FilledTechIndividualComponentProps> = ({
   tech,
+  isSelf,
 }) => {
   const {
     isOpen: DeleteTechModalIsOpen,
@@ -56,22 +58,24 @@ const FilledTechIndividualComponent: FC<FilledTechIndividualComponentProps> = ({
           </Text>
         </Flex>
       </Flex>
-      <Flex>
-        <IconButton
-          aria-label={'delete'}
-          variant='ghost'
-          colorScheme={'red'}
-          onClick={DeleteTechModalOnOpen}
-          icon={<AiFillDelete />}
-        />
-        <IconButton
-          aria-label={'edit'}
-          variant='ghost'
-          colorScheme={'teal'}
-          onClick={EditTechModalOnOpen}
-          icon={<AiFillEdit />}
-        />
-      </Flex>
+      {isSelf && (
+        <Flex>
+          <IconButton
+            aria-label={'delete'}
+            variant='ghost'
+            colorScheme={'red'}
+            onClick={DeleteTechModalOnOpen}
+            icon={<AiFillDelete />}
+          />
+          <IconButton
+            aria-label={'edit'}
+            variant='ghost'
+            colorScheme={'teal'}
+            onClick={EditTechModalOnOpen}
+            icon={<AiFillEdit />}
+          />
+        </Flex>
+      )}
       <DeleteTechPopupModal
         isOpen={DeleteTechModalIsOpen}
         onClose={DeleteTechModalOnClose}

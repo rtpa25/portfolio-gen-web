@@ -11,15 +11,17 @@ import FilledAboutSection from './userdata/FilledAboutSection';
 import FilledProjectList from './userdata/FilledProjectList';
 import FilledTechList from './userdata/FilledTechList';
 import FilledExperienceList from './userdata/FilledExperienceList';
+import { ProfileQuery } from '../../generated/graphql';
 
 interface DataSectionProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onOpen: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
   heading: string;
-  sectionAddHeading: string;
-  sectionAddBody: string;
-  buttonText: string;
+  sectionAddHeading?: string;
+  sectionAddBody?: string;
+  buttonText?: string;
+  userProfileData?: ProfileQuery | undefined;
 }
 
 const DataSection: FC<DataSectionProps> = ({
@@ -30,10 +32,11 @@ const DataSection: FC<DataSectionProps> = ({
   sectionAddHeading,
   sectionAddBody,
   buttonText,
+  userProfileData,
 }) => {
   let DataModal: FC<ModalProps> | null = null;
 
-  let dataBox: JSX.Element | null = (
+  let dataBox: JSX.Element | null = !userProfileData ? (
     <Box textAlign={'center'} p={15}>
       <Heading size={'md'} fontWeight='semibold'>
         {sectionAddHeading}
@@ -61,31 +64,39 @@ const DataSection: FC<DataSectionProps> = ({
         {buttonText}
       </Button>
     </Box>
-  );
+  ) : null;
 
   const { user } = useAppSelector((state) => state.currentUser);
 
   switch (heading) {
     case 'Projects':
-      if (user?.projectList.length !== 0) {
+      if (userProfileData) {
+        dataBox = <FilledProjectList userProfileData={userProfileData} />; //need to add prop of user profile data
+      } else if (user?.projectList.length !== 0 && !userProfileData) {
         dataBox = <FilledProjectList />;
       }
       DataModal = AddProjectModal;
       break;
     case 'TechStack':
-      if (user?.techList.length !== 0) {
+      if (userProfileData) {
+        dataBox = <FilledTechList userProfileData={userProfileData} />;
+      } else if (user?.techList.length !== 0 && !userProfileData) {
         dataBox = <FilledTechList />;
       }
       DataModal = AddTechStackModal;
       break;
     case 'Experience':
-      if (user?.experienceList.length !== 0) {
+      if (userProfileData) {
+        dataBox = <FilledExperienceList userProfileData={userProfileData} />;
+      } else if (user?.experienceList.length !== 0 && !userProfileData) {
         dataBox = <FilledExperienceList />;
       }
       DataModal = AddExperienceModal;
       break;
     case 'About':
-      if (user?.about) {
+      if (userProfileData) {
+        dataBox = <FilledAboutSection userProfileData={userProfileData} />;
+      } else if (user?.about && !userProfileData) {
         dataBox = <FilledAboutSection />;
       }
       DataModal = AddAboutSectionModal;
@@ -101,23 +112,30 @@ const DataSection: FC<DataSectionProps> = ({
           <Heading size={'md'} fontWeight='semibold'>
             {heading}
           </Heading>
-          <Box>
-            <IconButton
-              mx={2}
-              onClick={onOpen}
-              aria-label={'edit section'}
-              icon={<BiEditAlt />}
-            />
-            <IconButton
-              ml={2}
-              aria-label={'delete section'}
-              icon={<BiHide />}
-            />
-          </Box>
+          {!userProfileData && (
+            <Box>
+              <IconButton
+                mx={2}
+                onClick={onOpen}
+                aria-label={'edit section'}
+                icon={<BiEditAlt />}
+              />
+              <IconButton
+                ml={2}
+                aria-label={'delete section'}
+                icon={<BiHide />}
+              />
+            </Box>
+          )}
         </Flex>
         <Box>
           {dataBox}
-          {DataModal && <DataModal isOpen={isOpen} onClose={onClose} />}
+          {DataModal && (
+            <DataModal
+              isOpen={isOpen as boolean}
+              onClose={onClose as () => void}
+            />
+          )}
         </Box>
       </Box>
     </Box>
