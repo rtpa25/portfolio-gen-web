@@ -101,7 +101,7 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
           justifyContent='space-between'>
           <Flex wrap={'wrap'}>
             <a
-              href={`http://localhost:3000/${authenticatedUser?._id}`}
+              href={`https://devfolio.ronit.pro/${authenticatedUser?._id}`}
               target='_blank'
               rel='noreferrer'>
               <IconButton
@@ -120,12 +120,12 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
                 My Front Page:
               </Text>
               <Heading size={'md'} fontWeight='semibold'>
-                {`localhost:3000/${authenticatedUser?._id}`}
+                {`${authenticatedUser?.username}.devfolio.io`}
               </Heading>
             </Box>
           </Flex>
           <a
-            href={`http://localhost:3000/${authenticatedUser?._id}`}
+            href={`https://devfolio.ronit.pro/${authenticatedUser?._id}`}
             target='_blank'
             rel='noreferrer'>
             <Button
