@@ -31,7 +31,7 @@ const Links: FC<LinksProps> = ({
   const currentUser = useAppSelector((state) => state.currentUser.user);
 
   return (
-    <Box ml={6} mt={4}>
+    <Box ml={0} mt={4}>
       <Heading size={'md'} fontWeight='semibold'>
         {userProfileData
           ? userProfileData.userProfile?.username
@@ -43,7 +43,7 @@ const Links: FC<LinksProps> = ({
           : currentUser?.oneLiner}
       </Text>
       {!userProfileData ? (
-        currentUser?.socialLinks.length === 0 ? (
+        currentUser?.socialLinks && currentUser?.socialLinks.length === 0 ? (
           <Button mt={10} variant={'solid'} onClick={onOpen}>
             <Text fontWeight={'medium'}>Add Links</Text>
           </Button>

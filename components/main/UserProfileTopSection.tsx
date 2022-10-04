@@ -45,7 +45,6 @@ const UserProfileTopSection: FC<UserProfileTopSectionProps> = ({
                 ? userProfileData?.userProfile?.username
                 : authenticatedUser?.username
             }
-            mx={4}
             src={
               userProfileData
                 ? userProfileData?.userProfile?.avatar

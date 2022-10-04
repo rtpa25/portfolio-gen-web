@@ -31,9 +31,9 @@ const UserProfilePage: FC = () => {
         <Box w={'full'}>
           <UserProfileTopSection userProfileData={data} />
           <DataSection userProfileData={data} heading='About' />
-          <DataSection userProfileData={data} heading='Projects' />
           <DataSection userProfileData={data} heading='Experience' />
           <DataSection userProfileData={data} heading='TechStack' />
+          <DataSection userProfileData={data} heading='Projects' />
         </Box>
       </Wrapper>
     );
