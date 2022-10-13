@@ -16,7 +16,7 @@ import { useCreateSocialLinkMutation } from '../../generated/graphql';
 import { useAppDispatch } from '../../hooks/redux';
 import { addLink } from '../../store/slices/currentUser.slice';
 import { ModalProps } from '../../utils/ModalProps';
-import { SocialLink, SocialLinkTypes } from '../../utils/SocialLinkTypes';
+import { SocialLinkTypes } from '../../utils/SocialLinkTypes';
 import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
 
@@ -26,7 +26,7 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [linkType, setLinkType] = useState<SocialLink['type']>('Github');
+  const [linkType, setLinkType] = useState<string>('');
   const [addSocialLink] = useCreateSocialLinkMutation();
   const dispatch = useAppDispatch();
 
