@@ -44,8 +44,9 @@ const AddSocialLinkModal: FC<AddSocialLinkModalProps> = ({
                 const { data } = await addSocialLink({
                   variables: { input: { ...values, name: linkType } },
                 });
-                if (data?.createSocialLink.errors)
+                if (data?.createSocialLink.errors) {
                   setErrors(toErrorMap(data.createSocialLink.errors));
+                }
                 dispatch(addLink(data?.createSocialLink.socialLink!));
                 onClose();
               } catch (error) {
