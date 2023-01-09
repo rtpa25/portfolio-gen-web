@@ -15,17 +15,15 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Form, Formik } from 'formik';
 
-import { ChangeEvent, FC, LegacyRef, useRef, useState } from 'react';
+import { FC, LegacyRef, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 import {
     UpdateUserProfileInput,
-    User,
     useUpdateUserProfileMutation,
 } from '../../generated/graphql';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { setCurrentUserData } from '../../store/slices/currentUser.slice';
-import { storage } from '../../utils/firebase';
 import { ModalProps } from '../../utils/ModalProps';
+import { storage } from '../../utils/firebase';
 import { toErrorMap } from '../../utils/toErrorMap';
 import InputField from '../misc/InputField';
 
@@ -113,19 +111,23 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
                                 variables: {
                                     input,
                                 },
+                                refetchQueries: ['Me'],
+                                updateQueries: {
+                                    Me: (prev, { mutationResult }) => {
+                                        if (!mutationResult.data) return prev;
+                                        return {
+                                            ...prev,
+                                            mutationResult,
+                                        };
+                                    },
+                                },
                             });
                             if (data?.updateUserProfile.errors) {
                                 setErrors(
                                     toErrorMap(data.updateUserProfile.errors)
                                 );
                             }
-                            if (data?.updateUserProfile.user)
-                                dispatch(
-                                    setCurrentUserData({
-                                        user: data?.updateUserProfile
-                                            .user as User,
-                                    })
-                                );
+
                             onClose();
                         }}>
                         {({ isSubmitting }) => (
