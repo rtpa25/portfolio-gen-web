@@ -7,15 +7,15 @@ import '../styles/globals.css';
 import { client } from '../utils/apolloClient';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  return (
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </Provider>
-    </ApolloProvider>
-  );
+    return (
+        <ApolloProvider client={client}>
+            <Provider store={store}>
+                <ChakraProvider>
+                    <Component {...pageProps} />
+                </ChakraProvider>
+            </Provider>
+        </ApolloProvider>
+    );
 };
 
 export default App;

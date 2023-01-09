@@ -5,43 +5,43 @@ import { FC } from 'react';
 import { ProfileQuery, Project } from '../../../generated/graphql';
 
 interface FilledProjectListProps {
-  userProfileData?: ProfileQuery | undefined;
+    userProfileData?: ProfileQuery | undefined;
 }
 
 const FilledProjectList: FC<FilledProjectListProps> = ({ userProfileData }) => {
-  const selfProjectList = useAppSelector(
-    (state) => state.currentUser.user?.projectList
-  );
+    const selfProjectList = useAppSelector(
+        (state) => state.currentUser.user?.projectList
+    );
 
-  if (userProfileData) {
-    return (
-      <Flex flexDirection={'column'}>
-        {userProfileData.userProfile?.projectList?.map((project) => {
-          return (
-            <FilledProjectIndividualComponent
-              key={project._id}
-              project={project as Project}
-              isSelf={false}
-            />
-          );
-        })}
-      </Flex>
-    );
-  } else {
-    return (
-      <Flex flexDirection={'column'}>
-        {selfProjectList?.map((project) => {
-          return (
-            <FilledProjectIndividualComponent
-              key={project._id}
-              project={project}
-              isSelf={true}
-            />
-          );
-        })}
-      </Flex>
-    );
-  }
+    if (userProfileData) {
+        return (
+            <Flex flexDirection={'column'}>
+                {userProfileData.userProfile?.projectList?.map((project) => {
+                    return (
+                        <FilledProjectIndividualComponent
+                            key={project._id}
+                            project={project as Project}
+                            isSelf={false}
+                        />
+                    );
+                })}
+            </Flex>
+        );
+    } else {
+        return (
+            <Flex flexDirection={'column'}>
+                {selfProjectList?.map((project) => {
+                    return (
+                        <FilledProjectIndividualComponent
+                            key={project._id}
+                            project={project}
+                            isSelf={true}
+                        />
+                    );
+                })}
+            </Flex>
+        );
+    }
 };
 
 export default FilledProjectList;

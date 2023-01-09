@@ -1,10 +1,10 @@
 mutation UpdateProject($input: UpdateProjectInput!) {
-  updateProject(input: $input) {
-    project {
-      ...ProjectData
+    updateProject(input: $input) {
+        project {
+            ...ProjectData
+        }
+        errors {
+            ...FieldError
+        }
     }
-    errors {
-      ...FieldError
-    }
-  }
 }

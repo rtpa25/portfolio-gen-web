@@ -1,5 +1,5 @@
 query Profile($id: String!) {
-  userProfile(id: $id) {
-    ...UserData
-  }
+    userProfile(id: $id) {
+        ...UserData
+    }
 }

@@ -1,19 +1,19 @@
 mutation UpdateExperience($input: UpdateExperienceInput!) {
-  updateExperience(input: $input) {
-    experience {
-      _id
-      createdAt
-      title
-      company
-      from
-      to
-      current
-      description
-      user
+    updateExperience(input: $input) {
+        experience {
+            _id
+            createdAt
+            title
+            company
+            from
+            to
+            current
+            description
+            user
+        }
+        errors {
+            field
+            message
+        }
     }
-    errors {
-      field
-      message
-    }
-  }
 }

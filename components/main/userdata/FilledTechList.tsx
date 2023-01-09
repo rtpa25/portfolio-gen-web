@@ -5,41 +5,43 @@ import FilledTechIndividualComponent from './individualFilledComponents/FilledTe
 import { FC } from 'react';
 
 interface FilledTechListProps {
-  userProfileData?: ProfileQuery | undefined;
+    userProfileData?: ProfileQuery | undefined;
 }
 
 const FilledTechList: FC<FilledTechListProps> = ({ userProfileData }) => {
-  const techStack = useAppSelector((state) => state.currentUser.user?.techList);
-
-  if (userProfileData) {
-    return (
-      <Flex flexDirection={'column'}>
-        {userProfileData.userProfile?.techList?.map((tech) => {
-          return (
-            <FilledTechIndividualComponent
-              key={tech._id}
-              tech={tech as Tech}
-              isSelf={false}
-            />
-          );
-        })}
-      </Flex>
+    const techStack = useAppSelector(
+        (state) => state.currentUser.user?.techList
     );
-  }
 
-  return (
-    <Flex flexDirection={'column'} wrap='wrap' maxH={700}>
-      {techStack?.map((tech) => {
+    if (userProfileData) {
         return (
-          <FilledTechIndividualComponent
-            key={tech._id}
-            tech={tech}
-            isSelf={true}
-          />
+            <Flex flexDirection={'column'}>
+                {userProfileData.userProfile?.techList?.map((tech) => {
+                    return (
+                        <FilledTechIndividualComponent
+                            key={tech._id}
+                            tech={tech as Tech}
+                            isSelf={false}
+                        />
+                    );
+                })}
+            </Flex>
         );
-      })}
-    </Flex>
-  );
+    }
+
+    return (
+        <Flex flexDirection={'column'} wrap='wrap' maxH={700}>
+            {techStack?.map((tech) => {
+                return (
+                    <FilledTechIndividualComponent
+                        key={tech._id}
+                        tech={tech}
+                        isSelf={true}
+                    />
+                );
+            })}
+        </Flex>
+    );
 };
 
 export default FilledTechList;

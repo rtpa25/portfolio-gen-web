@@ -1,10 +1,10 @@
 mutation Login($input: SignInInput!) {
-  signIn(input: $input) {
-    user {
-      ...AuthData
+    signIn(input: $input) {
+        user {
+            ...AuthData
+        }
+        errors {
+            ...FieldError
+        }
     }
-    errors {
-      ...FieldError
-    }
-  }
 }

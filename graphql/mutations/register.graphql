@@ -1,10 +1,10 @@
 mutation Register($input: SignUpInput!) {
-  signUp(input: $input) {
-    user {
-      ...AuthData
+    signUp(input: $input) {
+        user {
+            ...AuthData
+        }
+        errors {
+            ...FieldError
+        }
     }
-    errors {
-      ...FieldError
-    }
-  }
 }

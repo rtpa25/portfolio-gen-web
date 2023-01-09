@@ -1,11 +1,11 @@
 fragment ProjectData on Project {
-  _id
-  createdAt
-  title
-  description
-  github
-  demo
-  tech
-  imageUrl
-  user
+    _id
+    createdAt
+    title
+    description
+    github
+    demo
+    tech
+    imageUrl
+    user
 }

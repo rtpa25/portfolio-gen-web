@@ -1,10 +1,10 @@
 mutation UpdateTech($input: UpdateTechInput!) {
-  updateTech(input: $input) {
-    tech {
-      ...TechData
+    updateTech(input: $input) {
+        tech {
+            ...TechData
+        }
+        errors {
+            ...FieldError
+        }
     }
-    errors {
-      ...FieldError
-    }
-  }
 }

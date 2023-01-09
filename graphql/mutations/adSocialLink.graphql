@@ -1,14 +1,14 @@
 mutation CreateSocialLink($input: CreateSocialLinksInput!) {
-  createSocialLink(input: $input) {
-    socialLink {
-      _id
-      link
-      name
-      user
+    createSocialLink(input: $input) {
+        socialLink {
+            _id
+            link
+            name
+            user
+        }
+        errors {
+            field
+            message
+        }
     }
-    errors {
-      field
-      message
-    }
-  }
 }

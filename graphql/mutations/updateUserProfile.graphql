@@ -1,11 +1,10 @@
 mutation UpdateUserProfile($input: UpdateUserProfileInput!) {
-  updateUserProfile(input: $input) {
-    user {
-      _id
-      about
+    updateUserProfile(input: $input) {
+        user {
+            ...UserData
+        }
+        errors {
+            ...FieldError
+        }
     }
-    errors {
-      ...FieldError
-    }
-  }
 }
